@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
         // Set click listener for the button to go to the login page
         ((Button) findViewById(R.id.launch_login)).setOnClickListener(
         	new Button.OnClickListener(){
-				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 					MainActivity.this.startActivity(intent);
