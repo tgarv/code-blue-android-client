@@ -3,8 +3,12 @@ package com.kalidu.codeblue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -39,6 +43,11 @@ public class MainActivity extends Activity {
 				}
         	}
         );
+        
+        // Set up the LocationManager to get location updates
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new BlueLocationListener();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
