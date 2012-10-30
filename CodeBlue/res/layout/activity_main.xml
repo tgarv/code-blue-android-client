@@ -2,20 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".MainActivity" />
         
     <Button
         android:id="@+id/launch_login"
         android:text="Go to login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+        
+    <Button
+        android:id="@+id/launch_location_view"
+        android:text="View your location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/launch_login"
         android:layout_weight="1"/>
 
 </RelativeLayout>

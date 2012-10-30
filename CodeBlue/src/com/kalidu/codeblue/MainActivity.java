@@ -3,17 +3,16 @@ package com.kalidu.codeblue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.util.Log;
 
 public class MainActivity extends Activity {
 
@@ -39,6 +38,16 @@ public class MainActivity extends Activity {
         	new Button.OnClickListener(){
 				public void onClick(View v) {
 					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+					MainActivity.this.startActivity(intent);
+				}
+        	}
+        );
+        
+     // Set click listener for the button to go to the login page
+        ((Button) findViewById(R.id.launch_location_view)).setOnClickListener(
+        	new Button.OnClickListener(){
+				public void onClick(View v) {
+					Intent intent = new Intent(MainActivity.this, LocationViewActivity.class);
 					MainActivity.this.startActivity(intent);
 				}
         	}
