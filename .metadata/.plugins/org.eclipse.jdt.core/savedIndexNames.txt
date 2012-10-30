@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/home/tgarv/Desktop/Code/code-blue-android-client/.metadata/.plugins/org.eclipse.jdt.core
+1051500978.index
+234157880.index
+167966636.index
