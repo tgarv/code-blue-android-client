@@ -9,13 +9,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
-        
-    <Button
-        android:id="@+id/launch_location_view"
-        android:text="View your location"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/launch_login"
-        android:layout_weight="1"/>
 
 </RelativeLayout>

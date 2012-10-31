@@ -20,7 +20,7 @@
     	android:inputType="textPassword"/>
     	
     <Button
-        android:id="@+id/launch_login"
+        android:id="@+id/login"
         android:text="Login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

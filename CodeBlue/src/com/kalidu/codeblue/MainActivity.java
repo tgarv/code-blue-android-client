@@ -1,53 +1,30 @@
 package com.kalidu.codeblue;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    private BlueHttpClient client;
+    private static BlueHttpClient client;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.client = new BlueHttpClient();
-        
-        // Test the client's getJSON method. Using some random API that Square made me use during their interview
-        JSONObject j = this.client.getJSON("http://api.seatgeek.com/2/performers/288");
-        try {
-			Log.i("JSON", j.get("name").toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        MainActivity.client = new BlueHttpClient();
         
         // Set click listener for the button to go to the login page
         ((Button) findViewById(R.id.launch_login)).setOnClickListener(
         	new Button.OnClickListener(){
 				public void onClick(View v) {
 					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-					MainActivity.this.startActivity(intent);
-				}
-        	}
-        );
-        
-     // Set click listener for the button to go to the login page
-        ((Button) findViewById(R.id.launch_location_view)).setOnClickListener(
-        	new Button.OnClickListener(){
-				public void onClick(View v) {
-					Intent intent = new Intent(MainActivity.this, LocationViewActivity.class);
 					MainActivity.this.startActivity(intent);
 				}
         	}
@@ -65,7 +42,7 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    public BlueHttpClient getClient(){
-    	return this.client;
+    public static BlueHttpClient getClient(){
+    	return MainActivity.client;
     }
 }
