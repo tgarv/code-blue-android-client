@@ -48,8 +48,8 @@ public class LoginActivity extends Activity {
 					params.add(new BasicNameValuePair("password", password));
 					
 					// Make sure the credentials are valid
-					JSONObject j = MainActivity.getClient().httpPost(
-							"http://10.0.2.2:5000/api/user/verify_credentials.json", params);
+					String url = MainActivity.urlManager.getVerifyCredentialsURL();
+					JSONObject j = MainActivity.getClient().httpPost(url, params);
 					Log.i("LOGIN", j.toString());
 					
 					try {

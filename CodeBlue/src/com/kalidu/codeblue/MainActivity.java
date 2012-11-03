@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
     private static BlueHttpClient client;
 	private static SharedPreferences preferences;
 	private static LocationManager locationManager;
+	static URLManager urlManager;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         MainActivity.client = new BlueHttpClient();
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        MainActivity.urlManager = new URLManager();
         Log.i("Prefs", preferences.getAll().toString());
         
         // Set click listener for the button to go to the login page
@@ -60,7 +62,7 @@ public class MainActivity extends Activity {
 		}
 		
 		else{
-			String verifyTokenURL = "http://10.0.2.2:5000/api/android/verify_token.json";
+			String verifyTokenURL = urlManager.getVerifyTokenURL();
 			List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 			params.add(new BasicNameValuePair("token", preferences.getString("token", "")));
 			JSONObject response = client.httpPost(verifyTokenURL, params);
