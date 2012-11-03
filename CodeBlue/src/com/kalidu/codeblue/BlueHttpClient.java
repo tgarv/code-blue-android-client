@@ -83,21 +83,3 @@ public class BlueHttpClient extends DefaultHttpClient {
 	    }
 	}
 }
-
-// try {
-// HttpClient client = new DefaultHttpClient();
-// HttpGet request = new HttpGet();
-// request.setURI(new URI("http://10.0.2.2:5000/post/0"));
-// response = client.execute(request);
-// String s = convertStreamToString(response.getEntity().getContent());
-// Log.d("GET", s);
-// } catch (URISyntaxException e) {
-// e.printStackTrace();
-// } catch (ClientProtocolException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// } catch (IOException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// }
-// }
