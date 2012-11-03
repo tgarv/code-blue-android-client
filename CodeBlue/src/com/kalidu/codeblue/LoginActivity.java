@@ -65,6 +65,9 @@ public class LoginActivity extends Activity {
 							Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 							LoginActivity.this.startActivity(intent);
 						}
+						else {
+							// Login failed, show errors and try again TODO
+						}
 					} catch (JSONException e) {
 						// Login failed, show errors and try again TODO
 						

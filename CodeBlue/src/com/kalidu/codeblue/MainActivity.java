@@ -18,8 +18,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -36,16 +35,6 @@ public class MainActivity extends Activity {
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         MainActivity.urlManager = new URLManager();
         Log.i("Prefs", preferences.getAll().toString());
-        
-        // Set click listener for the button to go to the login page
-        ((Button) findViewById(R.id.launch_login)).setOnClickListener(
-        	new Button.OnClickListener(){
-				public void onClick(View v) {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-					MainActivity.this.startActivity(intent);
-				}
-        	}
-        );
         
         // Set up the LocationManager to get location updates
         MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -80,6 +69,8 @@ public class MainActivity extends Activity {
 				MainActivity.this.startActivity(loginIntent);
 			}
 		}
+		// Set the greeting
+		((TextView) findViewById(R.id.welcome)).setText("Welcome, " + preferences.getString("username", "stranger"));
 
     }
 
