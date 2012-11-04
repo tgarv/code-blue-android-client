@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,8 @@ public class BlueHttpClient extends DefaultHttpClient {
 	}
 	
 	JSONObject httpPost(String url, List<NameValuePair> params){
+		// Every API post needs the token value, so add it here
+		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		JSONObject result = new JSONObject();
 		HttpPost post = new HttpPost(url);
 		try {

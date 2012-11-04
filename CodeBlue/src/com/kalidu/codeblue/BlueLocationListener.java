@@ -14,14 +14,15 @@ import android.util.Log;
 
 public class BlueLocationListener implements LocationListener{
 	public void onLocationChanged(Location location){
-		Log.i("Location", "Location update at " + location.getLatitude() + ", " + location.getLongitude());
+		Log.i("Location", "Location update at " + location.getLatitude() + ", " + location.getLongitude()
+				+ ", " + location.getAltitude());	// TODO altitude doesn't seem to be working
 		Log.i("Location", "Location update accuracy is " + location.getAccuracy());
 		BlueHttpClient client = MainActivity.getClient();
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Double.toString(location.getLongitude())));
-		params.add(new BasicNameValuePair("elevation", Double.toString(0)));
-		JSONObject j = client.httpPost("http://10.0.2.2:5000/api/user/set_location.json", params);
+		params.add(new BasicNameValuePair("elevation", Double.toString(location.getAltitude())));
+		JSONObject j = client.httpPost(MainActivity.urlManager.getSetLocationURL(), params);
 		Log.i("JSON", j.toString());
 	}
 	public void onProviderDisabled(String arg0) {
