@@ -71,6 +71,8 @@ public class MainActivity extends Activity {
 		}
 		// Set the greeting
 		((TextView) findViewById(R.id.welcome)).setText("Welcome, " + preferences.getString("username", "stranger"));
+		Intent questionViewIntent = new Intent(MainActivity.this, ListQuestionActivity.class);
+		this.startActivity(questionViewIntent);
 
     }
 

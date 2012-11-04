@@ -78,6 +78,7 @@ public class BlueHttpClient extends DefaultHttpClient {
 		return result;
 	}
 	
+	// Got this from stackoverflow
 	String convertStreamToString(java.io.InputStream is) {
 	    try {
 	        return new java.util.Scanner(is).useDelimiter("\\A").next();

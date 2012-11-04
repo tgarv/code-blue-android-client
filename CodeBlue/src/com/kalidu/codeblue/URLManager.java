@@ -6,6 +6,7 @@ public class URLManager {
 	private String verifyToken = "verify_token.json";
 	private String verifyCredentials = "user/verify_credentials.json";
 	private String setLocation = "user/set_location.json";
+	private String listQuestions = "question/list.json";
 	
 	public String getVerifyTokenURL(){
 		return androidBase + verifyToken;
@@ -17,5 +18,9 @@ public class URLManager {
 	
 	public String getSetLocationURL(){
 		return androidBase + setLocation;
+	}
+	
+	public String getListQuestionsURL(){
+		return base + listQuestions;
 	}
 }
