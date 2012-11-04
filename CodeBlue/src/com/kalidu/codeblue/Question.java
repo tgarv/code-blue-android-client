@@ -54,6 +54,7 @@ public class Question extends Commentable {
 	public LinearLayout getView(){
 		// TODO implement this
 		LinearLayout ll = new LinearLayout(this.getContext());
+		ll.setOrientation(LinearLayout.VERTICAL);
 		TextView title = new TextView(this.getContext());
 		title.setText(this.getTitle());
 		ll.addView(title);
