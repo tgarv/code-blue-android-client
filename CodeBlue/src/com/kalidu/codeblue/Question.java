@@ -1,67 +1,46 @@
 package com.kalidu.codeblue;
 
-import java.util.List;
 
-import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-public class Question extends Commentable {
+/**
+ * 
+ * @author tgarv
+ * The model class for a Question
+ */
+public class Question {
 
 	private final int questionId;
 	private String title;
 	private String text;
-	private List<Answer> answers;
+	private final int userId;
 
-	public Question(Context context, int userId, int questionId, String title, String text, 
-			List<Answer> answers) {
-		super(context, userId);
-		// TODO Auto-generated constructor stub
+	public Question(int userId, int questionId, String title, String text) {
+		this.userId = userId;
 		this.questionId = questionId;
 		this.setTitle(title);
 		this.setText(text);
-		this.answers = answers;
 	}
-
+	
 	public int getQuestionId() {
-		return questionId;
+	return questionId;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	public String getText() {
 		return text;
 	}
-
+	
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	public List<Answer> getAnswers() {
-		return answers;
-	}
-
-	public void addAnswer(Answer answer) {
-		this.answers.add(answer);
-	}
 	
-	public LinearLayout getView(){
-		// TODO implement this
-		LinearLayout ll = new LinearLayout(this.getContext());
-		ll.setOrientation(LinearLayout.VERTICAL);
-		TextView title = new TextView(this.getContext());
-		title.setText(this.getTitle());
-		ll.addView(title);
-		TextView text = new TextView(this.getContext());
-		text.setText(this.getText());
-		ll.addView(text);
-		return ll;
+	public int getUserId() {
+		return userId;
 	}
-
 }

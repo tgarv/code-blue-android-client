@@ -1,23 +1,22 @@
 package com.kalidu.codeblue;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * 
+ * @author tgarv
+ * The model class for an Answer.
+ */
+public class Answer {
 
-import android.content.Context;
-
-public class Answer extends Commentable {
-
-//	public static List<AnswerView> members = new ArrayList<AnswerView>(0);
 	private final int answerId;
 	private String text;
 	private int score;
+	private final int userId;
 
-	public Answer(Context context, int userId, int answerId, String text, int score) {
-		super(context, userId);
+	public Answer(int userId, int answerId, String text, int score) {
+		this.userId = userId;
 		this.answerId = answerId;
 		this.setText(text);
 		this.setScore(score);
-//		AnswerView.members.add(this);
 	}
 
 	public int getAnswerId() {
@@ -38,6 +37,10 @@ public class Answer extends Commentable {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public int getUserId() {
+		return userId;
 	}
 
 }
