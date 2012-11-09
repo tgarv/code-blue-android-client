@@ -18,6 +18,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -71,9 +74,26 @@ public class MainActivity extends Activity {
 		}
 		// Set the greeting
 		((TextView) findViewById(R.id.welcome)).setText("Welcome, " + preferences.getString("username", "stranger"));
-		Intent questionViewIntent = new Intent(MainActivity.this, ListQuestionActivity.class);
-		this.startActivity(questionViewIntent);
 
+		// Set click listener for "View Questions" button
+		((Button) findViewById(R.id.launch_question_list)).setOnClickListener(
+			new OnClickListener(){
+				public void onClick(View arg0) {
+					Intent viewQuestionsIntent = new Intent(MainActivity.this, ListQuestionActivity.class);
+					MainActivity.this.startActivity(viewQuestionsIntent);
+				}
+			}
+		);
+		
+		// Set click listener for "New Question" button
+		((Button) findViewById(R.id.question_create)).setOnClickListener(
+			new OnClickListener(){
+				public void onClick(View arg0) {
+							Intent createQuestionIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
+							MainActivity.this.startActivity(createQuestionIntent);
+				}
+			}
+		);
     }
 
     @Override
