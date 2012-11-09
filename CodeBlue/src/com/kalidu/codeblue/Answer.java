@@ -1,5 +1,10 @@
 package com.kalidu.codeblue;
 
+import android.content.Context;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 /**
  * 
  * @author tgarv
@@ -41,6 +46,15 @@ public class Answer {
 
 	public int getUserId() {
 		return userId;
+	}
+	
+	public LinearLayout getView(Context c){
+		LinearLayout ll = new LinearLayout(c);
+		TextView text = new TextView(c);
+		text.setText(this.getText());
+		ll.addView(text);
+		ll.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		return ll;
 	}
 
 }

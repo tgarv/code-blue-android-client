@@ -8,5 +8,6 @@
     <string name="title_activity_location_view">LocationViewActivity</string>
     <string name="title_activity_list_question">Questions</string>
     <string name="title_activity_create_question">Post a New Question</string>
+    <string name="title_activity_view_question">ViewQuestionActivity</string>
 
 </resources>

@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,12 +37,21 @@ public class ListQuestionActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
  
 		//get selected items
-		String selectedValue = "Question " + Integer.toString(((Question)(getListAdapter().getItem(position))).getQuestionId());
+    	String questionId = Integer.toString(((Question)(getListAdapter().getItem(position))).getQuestionId());
+		String selectedValue = "Question " + questionId;
 		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
- 
+		
+		String url = MainActivity.urlManager.getViewQuestionURL(questionId);
+		
+		BlueHttpClient client = MainActivity.getClient();
+		JSONObject j = client.httpGet(url);
+		
+		Intent intent = new Intent(ListQuestionActivity.this, ViewQuestionActivity.class);
+		intent.putExtra("questionJSON", j.toString());
+		ListQuestionActivity.this.startActivity(intent);
 	}
     
-    // Make the GET request and add the questions to the List of QuestionViews
+    // Make the GET request and add the questions to the List of Questions
     public void getQuestions(){
     	String url = MainActivity.urlManager.getListQuestionsURL();
     	JSONObject j = MainActivity.getClient().httpGet(url);
