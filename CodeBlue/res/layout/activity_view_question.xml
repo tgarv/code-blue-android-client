@@ -7,25 +7,38 @@
     	android:id="@+id/view_question_title"
     	android:text=""
     	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_weight="1"/>
+    	android:layout_height="wrap_content"/>
     
     <TextView
     	android:id="@+id/view_question_text"
     	android:text=""
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:layout_below="@id/view_question_title"
-    	android:layout_weight="1"/>
+    	android:layout_below="@id/view_question_title"/>
     	
     <LinearLayout
     	android:id="@+id/answers"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:layout_below="@id/view_question_text"
-    	android:orientation="vertical"
-    	android:layout_weight="1"/>
-    	
+    	android:orientation="vertical"/>
 
+    <EditText
+        android:id="@+id/new_answer_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/answers"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/create_answer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/new_answer_text"
+        android:text="Answer this Question" />
 
 </RelativeLayout>

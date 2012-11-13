@@ -9,6 +9,7 @@ public class URLManager {
 	private String listQuestions = "question/list.json";
 	private String createQuestion = "question/create.json";
 	private String viewQuestion = "question/%s/view.json";
+	private String createAnswer = "answer/create.json";
 	
 	public String getVerifyTokenURL(){
 		return androidBase + verifyToken;
@@ -32,5 +33,9 @@ public class URLManager {
 	
 	public String getViewQuestionURL(String id){
 		return androidBase + String.format(viewQuestion, id);
+	}
+	
+	public String getCreateAnswerURL(){
+		return androidBase + createAnswer;
 	}
 }

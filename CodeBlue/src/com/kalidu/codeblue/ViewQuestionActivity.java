@@ -1,5 +1,10 @@
 package com.kalidu.codeblue;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,12 +13,17 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Button;
 
 public class ViewQuestionActivity extends Activity {
 
     private static LinearLayout answerRoot;
+	private int questionId;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,7 @@ public class ViewQuestionActivity extends Activity {
         Bundle b = this.getIntent().getExtras();
         try {
 			question = new JSONObject(b.getString("questionJSON"));
+			setQuestionId(question.getInt("question_id"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -31,6 +42,21 @@ public class ViewQuestionActivity extends Activity {
         
         ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
         setQuestionView(question);
+        
+        // Set the click listener for the button to create a new answer
+        ((Button) findViewById(R.id.create_answer)).setOnClickListener(
+        	new OnClickListener(){
+				public void onClick(View v) {
+					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
+					List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+					params.add(new BasicNameValuePair("text", text));
+					params.add(new BasicNameValuePair("question_id", Integer.toString(getQuestionId())));
+					BlueHttpClient client = MainActivity.getClient();
+					String url = MainActivity.urlManager.getCreateAnswerURL();
+					client.httpPost(url, params);
+				}
+        		
+        	});
     }
 
     @Override
@@ -39,6 +65,7 @@ public class ViewQuestionActivity extends Activity {
         return true;
     }
     
+    // Uses the JSON representation of the question and its answers to construct a view for the Question.
     public void setQuestionView(JSONObject question){
     	Log.i("QuestionJSON", question.toString());
     	
@@ -83,5 +110,13 @@ public class ViewQuestionActivity extends Activity {
 
 	public static void setAnswerRoot(LinearLayout answerRoot) {
 		ViewQuestionActivity.answerRoot = answerRoot;
+	}
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
 }
