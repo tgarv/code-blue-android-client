@@ -43,20 +43,7 @@ public class ViewQuestionActivity extends Activity {
         ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
         setQuestionView(question);
         
-        // Set the click listener for the button to create a new answer
-        ((Button) findViewById(R.id.create_answer)).setOnClickListener(
-        	new OnClickListener(){
-				public void onClick(View v) {
-					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
-					List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-					params.add(new BasicNameValuePair("text", text));
-					params.add(new BasicNameValuePair("question_id", Integer.toString(getQuestionId())));
-					BlueHttpClient client = MainActivity.getClient();
-					String url = MainActivity.urlManager.getCreateAnswerURL();
-					client.httpPost(url, params);
-				}
-        		
-        	});
+        setCreateAnswerListener();
     }
 
     @Override
@@ -83,6 +70,7 @@ public class ViewQuestionActivity extends Activity {
     	try {
 			JSONArray answers = question.getJSONArray("answers");
 			LinearLayout root = ViewQuestionActivity.getAnswerRoot();
+			root.removeAllViews();	// Remove anything that was there before
 			for(int i=0; i<answers.length(); i++){
 				// For each JSON representation of an answer, create a Java Answer object and then use that
 				// to get its view.
@@ -118,5 +106,37 @@ public class ViewQuestionActivity extends Activity {
 
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
+	}
+	
+	public void setCreateAnswerListener(){
+		// Set the click listener for the button to create a new answer
+        ((Button) findViewById(R.id.create_answer)).setOnClickListener(
+        	new OnClickListener(){
+				public void onClick(View v) {
+					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
+					List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+					params.add(new BasicNameValuePair("text", text));
+					params.add(new BasicNameValuePair("question_id", Integer.toString(getQuestionId())));
+					BlueHttpClient client = MainActivity.getClient();
+					String url = MainActivity.urlManager.getCreateAnswerURL();
+					JSONObject j = client.httpPost(url, params);
+					
+					try {
+						if (j.getBoolean("success")){
+							JSONObject question = j.getJSONObject("question");
+							setQuestionView(question);
+							((EditText)findViewById(R.id.new_answer_text)).setText("");
+						}
+						else{
+							// TODO failed
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+        		
+        	}
+        );
 	}
 }
