@@ -89,8 +89,17 @@ public class MainActivity extends Activity {
 		((Button) findViewById(R.id.question_create)).setOnClickListener(
 			new OnClickListener(){
 				public void onClick(View arg0) {
-							Intent createQuestionIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
-							MainActivity.this.startActivity(createQuestionIntent);
+					Intent createQuestionIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
+					MainActivity.this.startActivity(createQuestionIntent);
+				}
+			}
+		);
+		
+		((Button) findViewById(R.id.launch_map)).setOnClickListener(
+			new OnClickListener(){
+				public void onClick(View arg0) {
+					Intent mapActivity = new Intent(MainActivity.this, BlueMapActivity.class);
+					MainActivity.this.startActivity(mapActivity);
 				}
 			}
 		);

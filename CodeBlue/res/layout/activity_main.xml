@@ -25,5 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/launch_question_list"
         android:layout_weight="1"/>
+    
+    <Button
+        android:id="@+id/launch_map"
+        android:text="View Map"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question_create"
+        android:layout_weight="1"/>
 
 </RelativeLayout>
