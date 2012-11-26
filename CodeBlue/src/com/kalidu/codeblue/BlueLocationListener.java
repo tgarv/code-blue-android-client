@@ -7,6 +7,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -17,6 +19,13 @@ public class BlueLocationListener implements LocationListener{
 		Log.i("Location", "Location update at " + location.getLatitude() + ", " + location.getLongitude()
 				+ ", " + location.getAltitude());	// TODO altitude doesn't seem to be working
 		Log.i("Location", "Location update accuracy is " + location.getAccuracy());
+		// Update the location stored in the SharedPreferences
+		final SharedPreferences preferences = MainActivity.getPreferences();
+        Editor editor = preferences.edit();
+        editor.putFloat("latitude", (float) location.getLatitude());
+        editor.putFloat("longitude", (float) location.getLongitude());
+        editor.commit();
+		// And make the POST to update the location on the server.
 		BlueHttpClient client = MainActivity.getClient();
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
