@@ -2,15 +2,19 @@ package com.kalidu.codeblue;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
 public class BlueItemizedOverlay extends ItemizedOverlay {
-	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+	private ArrayList<BlueOverlayItem> mOverlays = new ArrayList<BlueOverlayItem>();
 	private Context mContext;
 	
 	public BlueItemizedOverlay(Drawable defaultMarker, Context context) {
@@ -28,18 +32,35 @@ public class BlueItemizedOverlay extends ItemizedOverlay {
 		return mOverlays.size();
 	}
 	
-	public void addOverlay(OverlayItem overlay) {
+	public void addOverlay(BlueOverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
 	}
 	
 	@Override
 	protected boolean onTap(int index) {
-	  OverlayItem item = mOverlays.get(index);
-	  AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-	  dialog.setTitle(item.getTitle());
-	  dialog.setMessage(item.getSnippet());
-	  AlertDialog d = dialog.create();
+	  final BlueOverlayItem item = mOverlays.get(index);
+	  AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+	  builder.setTitle(item.getTitle());
+	  builder.setMessage(item.getSnippet());
+	  
+	  builder.setNeutralButton("View Answers", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id) {
+        	//get selected items
+          	String questionId = Integer.toString(item.getId());
+      		
+      		String url = MainActivity.urlManager.getViewQuestionURL(questionId);
+      		
+      		BlueHttpClient client = MainActivity.getClient();
+      		JSONObject j = client.httpGet(url);
+      		
+      		Intent intent = new Intent(mContext, ViewQuestionActivity.class);
+      		intent.putExtra("questionJSON", j.toString());
+      		mContext.startActivity(intent);
+          }
+      });
+	  
+	  AlertDialog d = builder.create();
 	  d.setCanceledOnTouchOutside(true);	// The dialog will close if you tap outside of it.
 	  d.show();
 	  return true;

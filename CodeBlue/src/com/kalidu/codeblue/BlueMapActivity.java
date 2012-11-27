@@ -35,7 +35,7 @@ public class BlueMapActivity extends MapActivity {
         int longitude = (int) (preferences.getFloat("longitude", 0) * 1e6);
         
         // Add a marker for the user location
-        addPoint(latitude, longitude, "That's you!", "Yeah!");
+        addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
         
         // Center the map on the user's location and set the zoom level
         MapController controller = mapView.getController();
@@ -64,21 +64,26 @@ public class BlueMapActivity extends MapActivity {
 	 * @param longitude	the longitude of the point
 	 * @param title	the title of the point
 	 * @param text the text for the point
+	 * @param type the type of marker this is, either "user" or "question" for now
+	 * @param id the id of the question if type == "question", otherwise nothing interesting (0) for now
 	 * @return true if the point was successfully added
 	 */
-	public boolean addPoint(int latitude, int longitude, String title, String text){
+	public boolean addPoint(int latitude, int longitude, String title, String text, String type, int id){
 		GeoPoint point = new GeoPoint(latitude, longitude);
-        OverlayItem userMarker = new OverlayItem(point, title, text);
+        BlueOverlayItem overlay = new BlueOverlayItem(point, title, text, type, id);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
-        Drawable drawable = this.getResources().getDrawable(R.drawable.marker);
-        BlueItemizedOverlay itemizedOverlay = new BlueItemizedOverlay(drawable, this);
-        itemizedOverlay.addOverlay(userMarker);
+        Drawable icon = this.getResources().getDrawable(R.drawable.marker);
+        BlueItemizedOverlay itemizedOverlay = new BlueItemizedOverlay(icon, this);
+        itemizedOverlay.addOverlay(overlay);
         mapOverlays.add(itemizedOverlay);
         
         return true;
 	}
 	
+	/**
+	 * Makes the HTTP Get request to get the list of questions, and then adds them as @BlueOverlayItem to the map
+	 */
 	public void addQuestions(){
 		String url = MainActivity.urlManager.getListQuestionsURL();
     	JSONObject j = MainActivity.getClient().httpGet(url);
@@ -88,9 +93,10 @@ public class BlueMapActivity extends MapActivity {
 				JSONObject question = questions.getJSONObject(i);
 				int latitude = (int) ((question.getDouble("latitude") * 1e6));
 				int longitude = (int) ((question.getDouble("longitude") * 1e6));
-				Log.i("MAP", Integer.toString(latitude));
-				Log.i("MAP", Integer.toString(longitude));
-				addPoint(latitude, longitude, question.getString("title"), question.getString("text"));
+				String title = question.getString("title");
+				String text = question.getString("text");
+				int id = question.getInt("id");
+				addPoint(latitude, longitude, title, text, "question", id);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

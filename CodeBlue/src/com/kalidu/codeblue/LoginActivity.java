@@ -37,7 +37,6 @@ public class LoginActivity extends Activity {
         	new OnClickListener(){
 
 				public void onClick(View v) {
-					Log.i("Click", "Login click");
 					// Get the username and password from the form, and verify the credentials with the api.
 					String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
 					String password = ((EditText)findViewById(R.id.login_password)).getText().toString();
