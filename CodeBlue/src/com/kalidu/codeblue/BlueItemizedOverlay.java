@@ -39,7 +39,9 @@ public class BlueItemizedOverlay extends ItemizedOverlay {
 	  AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 	  dialog.setTitle(item.getTitle());
 	  dialog.setMessage(item.getSnippet());
-	  dialog.show();
+	  AlertDialog d = dialog.create();
+	  d.setCanceledOnTouchOutside(true);	// The dialog will close if you tap outside of it.
+	  d.show();
 	  return true;
 	}
 
