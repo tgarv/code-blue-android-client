@@ -16,6 +16,7 @@ import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.utils.BlueHttpClient;
 import com.kalidu.codeblue.utils.BlueLocationListener;
+import com.kalidu.codeblue.utils.RequestManager;
 import com.kalidu.codeblue.utils.URLManager;
 
 import android.app.Activity;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
 	private static SharedPreferences preferences;
 	private static LocationManager locationManager;
 	private static URLManager urlManager;
+	private static RequestManager requestManager;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class MainActivity extends Activity {
         MainActivity.client = new BlueHttpClient();
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         MainActivity.setUrlManager(new URLManager());
+        MainActivity.setRequestManager(new RequestManager());
         Log.i("Prefs", preferences.getAll().toString());
         
         // Set up the LocationManager to get location updates
@@ -135,5 +138,13 @@ public class MainActivity extends Activity {
 
 	public static void setUrlManager(URLManager urlManager) {
 		MainActivity.urlManager = urlManager;
+	}
+
+	public static RequestManager getRequestManager() {
+		return requestManager;
+	}
+
+	public static void setRequestManager(RequestManager requestManager) {
+		MainActivity.requestManager = requestManager;
 	}
 }
