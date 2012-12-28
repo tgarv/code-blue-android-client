@@ -12,7 +12,7 @@ import android.util.Log;
 import com.kalidu.codeblue.activities.MainActivity;
 
 public class RequestManager {
-	public boolean createQuestion(String title, String query, String form_delta){
+	public JSONObject createQuestion(String title, String query, String form_delta){
 		String url = MainActivity.getUrlManager().getCreateQuestionURL();
 		BlueHttpClient client = MainActivity.getClient();
 		
@@ -23,6 +23,19 @@ public class RequestManager {
 		
 		JSONObject j = client.httpPost(url, params);
 		Log.i("JSON", j.toString());
-		return true;
+		return j;
+	}
+	
+	public JSONObject verifyCredentials(String username, String password){
+		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		params.add(new BasicNameValuePair("username", username));
+		params.add(new BasicNameValuePair("password", password));
+		
+		// Make sure the credentials are valid
+		String url = MainActivity.getUrlManager().getVerifyCredentialsURL();
+		JSONObject j = MainActivity.getClient().httpPost(url, params);
+		Log.i("LOGIN", j.toString());
+		
+		return j;
 	}
 }

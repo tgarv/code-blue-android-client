@@ -8,17 +8,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.R.id;
-import com.kalidu.codeblue.R.layout;
-import com.kalidu.codeblue.R.menu;
-import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
-import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
-import com.kalidu.codeblue.utils.BlueHttpClient;
-import com.kalidu.codeblue.utils.BlueLocationListener;
-import com.kalidu.codeblue.utils.RequestManager;
-import com.kalidu.codeblue.utils.URLManager;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +22,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.utils.BlueHttpClient;
+import com.kalidu.codeblue.utils.BlueLocationListener;
+import com.kalidu.codeblue.utils.RequestManager;
+import com.kalidu.codeblue.utils.URLManager;
 
 public class MainActivity extends Activity {
 

@@ -1,24 +1,12 @@
 package com.kalidu.codeblue.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.R.id;
-import com.kalidu.codeblue.R.layout;
-import com.kalidu.codeblue.R.menu;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,41 +14,40 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.kalidu.codeblue.R;
+
+/**
+ * 
+ * @author tgarv
+ * Activity to handle logins. If there's a token already stored, the login is handled with that.
+ * Otherwise, there's a form for the user to log in.
+ *
+ */
 public class LoginActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
-        // If there's a username in the preferences, fill in the username line
-        final SharedPreferences preferences = MainActivity.getPreferences();
-        String oldUsername = preferences.getString("username", "");
-        ((EditText) findViewById(R.id.login_username)).setText(oldUsername);
-        
-        ((Button) findViewById(R.id.login)).setOnClickListener(
+        setListeners();
+    }
+    
+    private void setListeners(){
+    	((Button) findViewById(R.id.login)).setOnClickListener(
         	new OnClickListener(){
 
 				public void onClick(View v) {
 					// Get the username and password from the form, and verify the credentials with the api.
 					String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
 					String password = ((EditText)findViewById(R.id.login_password)).getText().toString();
-					
-					// Add them to the params list to be used for the post request.
-					List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-					params.add(new BasicNameValuePair("username", username));
-					params.add(new BasicNameValuePair("password", password));
-					
-					// Make sure the credentials are valid
-					String url = MainActivity.getUrlManager().getVerifyCredentialsURL();
-					JSONObject j = MainActivity.getClient().httpPost(url, params);
-					Log.i("LOGIN", j.toString());
+					JSONObject j = MainActivity.getRequestManager().verifyCredentials(username, password);
 					
 					try {
 						if(j.getBoolean("success")){
-							String token = j.getString("token");
 							// Store the username and token string in the shared preferences
-							Editor editor = preferences.edit();
+							String token = j.getString("token");
+							Editor editor = MainActivity.getPreferences().edit();
+							
 							editor.putString("username", username);
 							editor.putString("token", token);
 							editor.commit();
