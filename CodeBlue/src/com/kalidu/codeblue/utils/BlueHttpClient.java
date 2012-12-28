@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -18,11 +18,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.kalidu.codeblue.activities.MainActivity;
+
 import android.util.Log;
 
 public class BlueHttpClient extends DefaultHttpClient {
 
-	JSONObject httpGet(String url) {
+	public JSONObject httpGet(String url) {
 		JSONObject result = new JSONObject();
 		HttpGet request = new HttpGet();
 		try {
@@ -36,7 +38,7 @@ public class BlueHttpClient extends DefaultHttpClient {
 
 	}
 	
-	JSONObject httpPost(String url, List<NameValuePair> params){
+	public JSONObject httpPost(String url, List<NameValuePair> params){
 		// Every API post needs the token value, so add it here
 		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		JSONObject result = new JSONObject();

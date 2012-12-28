@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.models;
 
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;

@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,12 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.R.menu;
+import com.kalidu.codeblue.utils.BlueHttpClient;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -44,7 +50,7 @@ public class CreateQuestionActivity extends Activity {
     public void createQuestion(String title, String text){
     	String formDelta = "6";	// TODO make this not constant
     	
-		String url = MainActivity.urlManager.getCreateQuestionURL();
+		String url = MainActivity.getUrlManager().getCreateQuestionURL();
 		BlueHttpClient client = MainActivity.getClient();
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);

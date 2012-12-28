@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import com.kalidu.codeblue.activities.MainActivity;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -31,7 +33,7 @@ public class BlueLocationListener implements LocationListener{
 		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Double.toString(location.getLongitude())));
 		params.add(new BasicNameValuePair("elevation", Double.toString(location.getAltitude())));
-		JSONObject j = client.httpPost(MainActivity.urlManager.getSetLocationURL(), params);
+		JSONObject j = client.httpPost(MainActivity.getUrlManager().getSetLocationURL(), params);
 		Log.i("JSON", j.toString());
 	}
 	public void onProviderDisabled(String arg0) {

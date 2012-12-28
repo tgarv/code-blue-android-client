@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,16 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.R.menu;
+import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.utils.BlueHttpClient;
+import com.kalidu.codeblue.utils.BlueLocationListener;
+import com.kalidu.codeblue.utils.URLManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,7 +38,7 @@ public class MainActivity extends Activity {
     private static BlueHttpClient client;
 	private static SharedPreferences preferences;
 	private static LocationManager locationManager;
-	static URLManager urlManager;
+	private static URLManager urlManager;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +46,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         MainActivity.client = new BlueHttpClient();
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        MainActivity.urlManager = new URLManager();
+        MainActivity.setUrlManager(new URLManager());
         Log.i("Prefs", preferences.getAll().toString());
         
         // Set up the LocationManager to get location updates
@@ -54,7 +64,7 @@ public class MainActivity extends Activity {
 		}
 		
 		else{
-			String verifyTokenURL = urlManager.getVerifyTokenURL();
+			String verifyTokenURL = getUrlManager().getVerifyTokenURL();
 			List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 			params.add(new BasicNameValuePair("token", preferences.getString("token", "")));
 			JSONObject response = client.httpPost(verifyTokenURL, params);
@@ -118,4 +128,12 @@ public class MainActivity extends Activity {
     public static SharedPreferences getPreferences(){
     	return MainActivity.preferences;
     }
+
+	public static URLManager getUrlManager() {
+		return urlManager;
+	}
+
+	public static void setUrlManager(URLManager urlManager) {
+		MainActivity.urlManager = urlManager;
+	}
 }

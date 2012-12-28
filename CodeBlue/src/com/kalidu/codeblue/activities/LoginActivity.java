@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -47,7 +52,7 @@ public class LoginActivity extends Activity {
 					params.add(new BasicNameValuePair("password", password));
 					
 					// Make sure the credentials are valid
-					String url = MainActivity.urlManager.getVerifyCredentialsURL();
+					String url = MainActivity.getUrlManager().getVerifyCredentialsURL();
 					JSONObject j = MainActivity.getClient().httpPost(url, params);
 					Log.i("LOGIN", j.toString());
 					

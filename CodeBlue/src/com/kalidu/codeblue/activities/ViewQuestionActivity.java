@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.R.menu;
+import com.kalidu.codeblue.models.Answer;
+import com.kalidu.codeblue.utils.BlueHttpClient;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -118,7 +125,7 @@ public class ViewQuestionActivity extends Activity {
 					params.add(new BasicNameValuePair("text", text));
 					params.add(new BasicNameValuePair("question_id", Integer.toString(getQuestionId())));
 					BlueHttpClient client = MainActivity.getClient();
-					String url = MainActivity.urlManager.getCreateAnswerURL();
+					String url = MainActivity.getUrlManager().getCreateAnswerURL();
 					JSONObject j = client.httpPost(url, params);
 					
 					try {

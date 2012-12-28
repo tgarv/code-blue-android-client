@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities.blueMapActivity;
 
 import java.util.List;
 
@@ -18,6 +18,12 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.drawable;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.R.menu;
+import com.kalidu.codeblue.activities.MainActivity;
 
 public class BlueMapActivity extends MapActivity {
     private MapView mapView;
@@ -85,7 +91,7 @@ public class BlueMapActivity extends MapActivity {
 	 * Makes the HTTP Get request to get the list of questions, and then adds them as @BlueOverlayItem to the map
 	 */
 	public void addQuestions(){
-		String url = MainActivity.urlManager.getListQuestionsURL();
+		String url = MainActivity.getUrlManager().getListQuestionsURL();
     	JSONObject j = MainActivity.getClient().httpGet(url);
     	try {
 			JSONArray questions = j.getJSONArray("questions");

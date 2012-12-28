@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities.blueMapActivity;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;

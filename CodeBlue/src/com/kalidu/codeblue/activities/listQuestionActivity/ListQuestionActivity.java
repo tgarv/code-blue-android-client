@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities.listQuestionActivity;
 
 import java.util.ArrayList;
 
@@ -14,6 +14,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.activities.ViewQuestionActivity;
+import com.kalidu.codeblue.models.Question;
+import com.kalidu.codeblue.utils.BlueHttpClient;
 
 public class ListQuestionActivity extends ListActivity {
 	private ArrayList<Question> questions;
@@ -41,7 +47,7 @@ public class ListQuestionActivity extends ListActivity {
 		String selectedValue = "Question " + questionId;
 		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
 		
-		String url = MainActivity.urlManager.getViewQuestionURL(questionId);
+		String url = MainActivity.getUrlManager().getViewQuestionURL(questionId);
 		
 		BlueHttpClient client = MainActivity.getClient();
 		JSONObject j = client.httpGet(url);
@@ -53,7 +59,7 @@ public class ListQuestionActivity extends ListActivity {
     
     // Make the GET request and add the questions to the List of Questions
     public void getQuestions(){
-    	String url = MainActivity.urlManager.getListQuestionsURL();
+    	String url = MainActivity.getUrlManager().getListQuestionsURL();
     	JSONObject j = MainActivity.getClient().httpGet(url);
     	Log.i("Questions", j.toString());
     	try {

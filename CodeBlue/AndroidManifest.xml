@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BlueMapActivity"
+            android:name="com.kalidu.codeblue.BlueMapActivity"
             android:label="@string/title_activity_map"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>

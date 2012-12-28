@@ -1,6 +1,11 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.activities.listQuestionActivity;
 
 import java.util.ArrayList;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.R.id;
+import com.kalidu.codeblue.R.layout;
+import com.kalidu.codeblue.models.Question;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.kalidu.codeblue;
+package com.kalidu.codeblue.utils;
 
 public class URLManager {
 	private String base = "http://10.0.2.2:5000/api/";
