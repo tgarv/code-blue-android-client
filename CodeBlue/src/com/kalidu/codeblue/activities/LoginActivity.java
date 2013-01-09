@@ -24,49 +24,11 @@ import com.kalidu.codeblue.R;
  *
  */
 public class LoginActivity extends Activity {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setListeners();
-    }
-    
-    private void setListeners(){
-    	((Button) findViewById(R.id.login)).setOnClickListener(
-        	new OnClickListener(){
-
-				public void onClick(View v) {
-					// Get the username and password from the form, and verify the credentials with the api.
-					String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
-					String password = ((EditText)findViewById(R.id.login_password)).getText().toString();
-					JSONObject j = MainActivity.getRequestManager().verifyCredentials(username, password);
-					
-					try {
-						if(j.getBoolean("success")){
-							// Store the username and token string in the shared preferences
-							String token = j.getString("token");
-							Editor editor = MainActivity.getPreferences().edit();
-							
-							editor.putString("username", username);
-							editor.putString("token", token);
-							editor.commit();
-						
-							// Redirect to home page
-							Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-							LoginActivity.this.startActivity(intent);
-						}
-						else {
-							// Login failed, show errors and try again TODO
-						}
-					} catch (JSONException e) {
-						// Login failed, show errors and try again TODO
-						
-					}
-				}
-        		
-        	}
-        );
     }
 
     @Override
@@ -85,5 +47,47 @@ public class LoginActivity extends Activity {
 			default:
 				return super.onOptionsItemSelected(item);
     	}
+    }
+    
+    /**
+     * Set up click/touch listeners
+     */
+    private void setListeners(){
+    	((Button) findViewById(R.id.login)).setOnClickListener(
+        	new OnClickListener(){
+
+				public void onClick(View v) {
+					// Get the username and password from the form, and verify the credentials with the api.
+					String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
+					String password = ((EditText)findViewById(R.id.login_password)).getText().toString();
+					JSONObject j = MainActivity.getRequestManager().verifyCredentials(username, password);
+					
+					try {
+						if(j.getBoolean("success")){	// Successfully verified
+							// Store the username and token string in the shared preferences
+							String token = j.getString("token");
+							Editor editor = MainActivity.getPreferences().edit();
+							
+							editor.putString("username", username);
+							editor.putString("token", token);
+							editor.commit();
+						
+							// Redirect to home page
+							Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+							LoginActivity.this.startActivity(intent);
+						}
+						else {
+							// Login failed, show errors and try again
+							// TODO
+						}
+					} catch (JSONException e) {
+						// Login failed, show errors and try again
+						// TODO
+						
+					}
+				}
+        		
+        	}
+        );
     }
 }

@@ -1,31 +1,21 @@
 package com.kalidu.codeblue.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.R.id;
-import com.kalidu.codeblue.R.layout;
-import com.kalidu.codeblue.R.menu;
-import com.kalidu.codeblue.models.Answer;
-import com.kalidu.codeblue.utils.BlueHttpClient;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.EditText;
-import android.widget.Button;
+
+import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.models.Answer;
 
 public class ViewQuestionActivity extends Activity {
 
@@ -36,8 +26,24 @@ public class ViewQuestionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_question);
+        JSONObject question = extractQuestionFromBundle();
+        setQuestionView(question);
         
-        JSONObject question = null;
+        setListeners();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_view_question, menu);
+        return true;
+    }
+    
+    /**
+	 * Get the Bundle associated with the Intent that created this Activity, and extract the Question from that Bundle.
+	 * Then, turn that into a JSONObject and set up the view.
+	 */
+	private JSONObject extractQuestionFromBundle(){
+		JSONObject question = null;
         Bundle b = this.getIntent().getExtras();
         try {
 			question = new JSONObject(b.getString("questionJSON"));
@@ -48,21 +54,15 @@ public class ViewQuestionActivity extends Activity {
 		}
         
         ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
-        setQuestionView(question);
-        
-        setCreateAnswerListener();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_view_question, menu);
-        return true;
-    }
+        return question;
+	}
     
-    // Uses the JSON representation of the question and its answers to construct a view for the Question.
+    /**
+     * Uses the JSON representation of the question and its answers to construct a view for the Question.
+     * 
+     * @param question	The JSON representation of the question and its answers
+     */
     public void setQuestionView(JSONObject question){
-    	Log.i("QuestionJSON", question.toString());
-    	
     	TextView title = ((TextView) findViewById(R.id.view_question_title));
     	TextView text = ((TextView) findViewById(R.id.view_question_text));
     	
@@ -78,15 +78,17 @@ public class ViewQuestionActivity extends Activity {
 			JSONArray answers = question.getJSONArray("answers");
 			LinearLayout root = ViewQuestionActivity.getAnswerRoot();
 			root.removeAllViews();	// Remove anything that was there before
+			
 			for(int i=0; i<answers.length(); i++){
-				// For each JSON representation of an answer, create a Java Answer object and then use that
-				// to get its view.
-				JSONObject a = (JSONObject) answers.get(i);
-				String answerText = a.getString("text");
-				Log.i("DEBUG", answerText);
-				int score = a.getInt("score");
-				int answerId = a.getInt("answer_id");
+				// For each JSON representation of an answer, create a Java Answer object and then use that to
+				// construct its view.
+				JSONObject answerJSON = (JSONObject) answers.get(i);
+				String answerText = answerJSON.getString("text");
+				int score = answerJSON.getInt("score");
+				int answerId = answerJSON.getInt("answer_id");
 				int userId = 0;	// TODO add this to the API call
+				
+				// Construct an Answer object using the parameters extracted from the JSON object.
 				Answer answer = new Answer(userId, answerId, answerText, score);
 				// Get the view for this answer object
 				LinearLayout answerView = answer.getView(getBaseContext());
@@ -94,42 +96,25 @@ public class ViewQuestionActivity extends Activity {
 				root.addView(answerView);
 			}
 		} catch (JSONException e) {
-			// There are no answers?
+			// TODO
+			// There are no answers, or the JSON object is badly formed.
 			e.printStackTrace();
 		}
     }
-
-	public static LinearLayout getAnswerRoot() {
-		return answerRoot;
-	}
-
-	public static void setAnswerRoot(LinearLayout answerRoot) {
-		ViewQuestionActivity.answerRoot = answerRoot;
-	}
-
-	public int getQuestionId() {
-		return questionId;
-	}
-
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
-	}
 	
-	public void setCreateAnswerListener(){
+	public void setListeners(){
 		// Set the click listener for the button to create a new answer
         ((Button) findViewById(R.id.create_answer)).setOnClickListener(
         	new OnClickListener(){
 				public void onClick(View v) {
 					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
-					List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-					params.add(new BasicNameValuePair("text", text));
-					params.add(new BasicNameValuePair("question_id", Integer.toString(getQuestionId())));
-					BlueHttpClient client = MainActivity.getClient();
-					String url = MainActivity.getUrlManager().getCreateAnswerURL();
-					JSONObject j = client.httpPost(url, params);
+					int questionId = getQuestionId();
+					// Make the request to create an answer.
+					JSONObject j = MainActivity.getRequestManager().createAnswer(text, questionId);
 					
 					try {
 						if (j.getBoolean("success")){
+							// The Answer was successfully created, so update the view
 							JSONObject question = j.getJSONObject("question");
 							setQuestionView(question);
 							((EditText)findViewById(R.id.new_answer_text)).setText("");
@@ -145,5 +130,21 @@ public class ViewQuestionActivity extends Activity {
         		
         	}
         );
+	}
+	
+	public static LinearLayout getAnswerRoot() {
+		return answerRoot;
+	}
+
+	public static void setAnswerRoot(LinearLayout answerRoot) {
+		ViewQuestionActivity.answerRoot = answerRoot;
+	}
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
 }

@@ -38,4 +38,16 @@ public class RequestManager {
 		
 		return j;
 	}
+	
+	public JSONObject createAnswer(String text, int questionId){
+		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		params.add(new BasicNameValuePair("text", text));
+		params.add(new BasicNameValuePair("question_id", Integer.toString(questionId)));
+		
+		BlueHttpClient client = MainActivity.getClient();
+		String url = MainActivity.getUrlManager().getCreateAnswerURL();
+		JSONObject j = client.httpPost(url, params);
+		
+		return j;
+	}
 }
