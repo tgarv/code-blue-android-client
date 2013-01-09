@@ -46,7 +46,8 @@ public class ViewQuestionActivity extends Activity {
 		JSONObject question = null;
         Bundle b = this.getIntent().getExtras();
         try {
-			question = new JSONObject(b.getString("questionJSON"));
+			int questionId = b.getInt("questionId");
+			question = MainActivity.getRequestManager().viewQuestion(questionId);;
 			setQuestionId(question.getInt("question_id"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

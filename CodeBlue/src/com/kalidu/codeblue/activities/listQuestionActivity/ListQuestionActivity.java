@@ -19,7 +19,6 @@ import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.ViewQuestionActivity;
 import com.kalidu.codeblue.models.Question;
-import com.kalidu.codeblue.utils.BlueHttpClient;
 
 public class ListQuestionActivity extends ListActivity {
 	private ArrayList<Question> questions;
@@ -43,17 +42,12 @@ public class ListQuestionActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
  
 		//get selected items
-    	String questionId = Integer.toString(((Question)(getListAdapter().getItem(position))).getQuestionId());
+    	int questionId = ((Question)(getListAdapter().getItem(position))).getQuestionId();
 		String selectedValue = "Question " + questionId;
 		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
 		
-		String url = MainActivity.getUrlManager().getViewQuestionURL(questionId);
-		
-		BlueHttpClient client = MainActivity.getClient();
-		JSONObject j = client.httpGet(url);
-		
 		Intent intent = new Intent(ListQuestionActivity.this, ViewQuestionActivity.class);
-		intent.putExtra("questionJSON", j.toString());
+		intent.putExtra("questionId", questionId);
 		ListQuestionActivity.this.startActivity(intent);
 	}
     

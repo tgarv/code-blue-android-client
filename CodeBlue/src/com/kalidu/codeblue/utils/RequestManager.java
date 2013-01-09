@@ -50,4 +50,13 @@ public class RequestManager {
 		
 		return j;
 	}
+	
+	public JSONObject viewQuestion(int questionId){
+		String url = MainActivity.getUrlManager().getViewQuestionURL(Integer.toString(questionId));
+  		Log.i("TEST", url);
+  		BlueHttpClient client = MainActivity.getClient();
+  		JSONObject j = client.httpGet(url);
+  		
+  		return j;
+	}
 }
