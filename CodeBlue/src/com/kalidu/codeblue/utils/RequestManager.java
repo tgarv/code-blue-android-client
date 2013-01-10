@@ -7,6 +7,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.kalidu.codeblue.activities.MainActivity;
@@ -58,5 +59,16 @@ public class RequestManager {
   		JSONObject j = client.httpGet(url);
   		
   		return j;
+	}
+	
+	public JSONObject setLocation(Location location){
+		BlueHttpClient client = MainActivity.getClient();
+		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
+		params.add(new BasicNameValuePair("longitude", Double.toString(location.getLongitude())));
+		params.add(new BasicNameValuePair("elevation", Double.toString(location.getAltitude())));
+		
+		JSONObject j = client.httpPost(MainActivity.getUrlManager().getSetLocationURL(), params);
+		return j;
 	}
 }
