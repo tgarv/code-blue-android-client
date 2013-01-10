@@ -1,5 +1,12 @@
 package com.kalidu.codeblue.utils;
 
+/**
+ * Wrapper around URLs used for various requests, so that it's easier to change the URLs for things without changes
+ * elsewhere.
+ * 
+ * @author tgarv
+ * 
+ */
 public class URLManager {
 	private String base = "http://10.0.2.2:5000/api/";
 	private String androidBase = "http://10.0.2.2:5000/api/android/";
@@ -31,6 +38,11 @@ public class URLManager {
 		return androidBase + createQuestion;
 	}
 	
+	/**
+	 * Constructs and returns the URL to view a particular question, specified by id.
+	 * @param id the ID of the Question to be viewed.
+	 * @return the URL to view that question.
+	 */
 	public String getViewQuestionURL(String id){
 		return androidBase + String.format(viewQuestion, id);
 	}
