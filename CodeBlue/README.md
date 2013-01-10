@@ -1,10 +1,11 @@
 Installation
 ------------
-Install Java: sudo apt-get install openjdk-6-jre
+Install Java: ```sudo apt-get install openjdk-6-jre```
 Install ADT Bundle: http://developer.android.com/sdk/installing/bundle.html 
 Install Egit: http://www.vogella.com/articles/EGit/article.html
 
-git clone git@github.com:tgarv/code-blue-android-client.git
+In terminal:
+```git clone git@github.com:tgarv/code-blue-android-client.git```
 
 In Eclipse:
 File -> Import -> Git -> Projects from Git
