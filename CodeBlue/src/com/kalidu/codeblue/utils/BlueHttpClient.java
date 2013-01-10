@@ -28,7 +28,7 @@ public class BlueHttpClient extends DefaultHttpClient {
 	 * Makes an HTTP GET request to the given URL, and returns the JSON response given by the server.
 	 * 
 	 * @param url the String URL to make the GET request.
-	 * @return JSONObject, the JSON response from the server at the given url.
+	 * @return the JSON response from the server at the given url.
 	 */
 	public JSONObject httpGet(String url) {
 		JSONObject result = new JSONObject();
@@ -50,7 +50,7 @@ public class BlueHttpClient extends DefaultHttpClient {
 	 * 
 	 * @param url the String URL to make the POST request.
 	 * @param params the List of parameters to include in the post request
-	 * @return JSONObject, the JSON response from the server
+	 * @return the JSON response from the server
 	 */
 	public JSONObject httpPost(String url, List<NameValuePair> params){
 		// Every API post needs the token value, so add it here
@@ -71,7 +71,7 @@ public class BlueHttpClient extends DefaultHttpClient {
 	 * Takes a fully formed HttpUriRequest and executes that request.
 	 * 
 	 * @param request the HttpUriRequest object containing all of the url and parameter information
-	 * @return JSONObject, the JSON response from the server.
+	 * @return the JSON response from the server.
 	 */
 	JSONObject executeRequest(HttpUriRequest request){
 		HttpResponse response = null;
