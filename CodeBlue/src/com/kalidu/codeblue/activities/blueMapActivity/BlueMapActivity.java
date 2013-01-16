@@ -6,24 +6,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.R.drawable;
-import com.kalidu.codeblue.R.id;
-import com.kalidu.codeblue.R.layout;
-import com.kalidu.codeblue.R.menu;
+import com.kalidu.codeblue.activities.CreateQuestionActivity;
 import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 
 public class BlueMapActivity extends MapActivity {
     private MapView mapView;
@@ -54,8 +52,37 @@ public class BlueMapActivity extends MapActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_map, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    	switch(item.getItemId()){
+    		case R.id.menu_new_question:
+    			Intent newQuestionIntent = new Intent(this, CreateQuestionActivity.class);
+				this.startActivity(newQuestionIntent);
+				return true;
+    		case R.id.menu_questions_list:
+    			Intent questionsListIntent = new Intent(this, ListQuestionActivity.class);
+				this.startActivity(questionsListIntent);
+				return true;
+    		case R.id.menu_questions_map:
+    			Intent questionsMapIntent = new Intent(this, BlueMapActivity.class);
+				this.startActivity(questionsMapIntent);
+				return true;
+    		case R.id.menu_profile:
+    			// TODO
+    			return true;
+    		case R.id.menu_search:
+    			// TODO
+    			return true;
+    		case R.id.menu_settings:
+    			// TODO
+    			return true;
+			default:
+				return super.onOptionsItemSelected(item);
+    	}
     }
 
 	@Override

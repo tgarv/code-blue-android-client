@@ -5,8 +5,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.models.Answer;
 
 public class ViewQuestionActivity extends Activity {
@@ -34,8 +38,37 @@ public class ViewQuestionActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_view_question, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    	switch(item.getItemId()){
+    		case R.id.menu_new_question:
+    			Intent newQuestionIntent = new Intent(this, CreateQuestionActivity.class);
+				this.startActivity(newQuestionIntent);
+				return true;
+    		case R.id.menu_questions_list:
+    			Intent questionsListIntent = new Intent(this, ListQuestionActivity.class);
+				this.startActivity(questionsListIntent);
+				return true;
+    		case R.id.menu_questions_map:
+    			Intent questionsMapIntent = new Intent(this, BlueMapActivity.class);
+				this.startActivity(questionsMapIntent);
+				return true;
+    		case R.id.menu_profile:
+    			// TODO
+    			return true;
+    		case R.id.menu_search:
+    			// TODO
+    			return true;
+    		case R.id.menu_settings:
+    			// TODO
+    			return true;
+			default:
+				return super.onOptionsItemSelected(item);
+    	}
     }
     
     /**
