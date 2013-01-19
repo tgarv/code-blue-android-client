@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity {
 	private static LocationManager locationManager;
 	private static URLManager urlManager;
 	private static RequestManager requestManager;
+	
+	static final String SENDER_ID = "164033855111";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class MainActivity extends Activity {
         MainActivity.setUrlManager(new URLManager());
         MainActivity.setRequestManager(new RequestManager());
         Log.i("Prefs", preferences.getAll().toString());
+        
+        initGCM();
         
         // Set up the LocationManager to get location updates
         MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -119,6 +124,18 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    private void initGCM(){
+    	// Set up GCM Stuff
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        if (regId.equals("")) {
+          GCMRegistrar.register(this, MainActivity.SENDER_ID);
+        } else {
+          Log.i("GCM", "Already registered");
+        }
     }
     
     public static BlueHttpClient getClient(){
