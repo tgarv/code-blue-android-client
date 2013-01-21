@@ -1,10 +1,5 @@
 package com.kalidu.codeblue.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,14 +22,13 @@ import com.google.android.gcm.GCMRegistrar;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
-import com.kalidu.codeblue.utils.BlueHttpClient;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.BlueLocationListener;
 import com.kalidu.codeblue.utils.RequestManager;
 import com.kalidu.codeblue.utils.URLManager;
 
 public class MainActivity extends Activity {
 
-    private static BlueHttpClient client;
 	private static SharedPreferences preferences;
 	private static LocationManager locationManager;
 	private static URLManager urlManager;
@@ -46,7 +40,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MainActivity.client = new BlueHttpClient();
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         MainActivity.setUrlManager(new URLManager());
         MainActivity.setRequestManager(new RequestManager());
@@ -61,32 +54,10 @@ public class MainActivity extends Activity {
 		
 		// Redirect to the login page if the sharedPreferences doesn't have a token string or if that string 
 		// isn't valid
-		Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-		if((!preferences.contains("token"))){
-			Log.e("Login", "No token found in preferences");
-			// User not logged in, redirect to login page
-			MainActivity.this.startActivity(loginIntent);
-		}
 		
-		else{
-			String verifyTokenURL = getUrlManager().getVerifyTokenURL();
-			List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-			params.add(new BasicNameValuePair("token", preferences.getString("token", "")));
-			JSONObject response = client.httpPost(verifyTokenURL, params);
-			
-			try {
-				if(!response.getBoolean("success")){
-					Log.e("Login", "JSON response says it was unsuccessful");
-					MainActivity.this.startActivity(loginIntent);
-				}
-				else {
-					// user is logged in, probably redirect to profile page or something
-				}
-			} catch (JSONException e) {
-				Log.e("Login", "JSON response had no \"success\" value");
-				MainActivity.this.startActivity(loginIntent);
-			}
-		}
+		checkLogin();
+		
+		
 		// Set the greeting
 		((TextView) findViewById(R.id.welcome)).setText("Welcome, " + preferences.getString("username", "stranger"));
 
@@ -120,7 +91,7 @@ public class MainActivity extends Activity {
 		);
     }
 
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
@@ -135,12 +106,51 @@ public class MainActivity extends Activity {
           GCMRegistrar.register(this, MainActivity.SENDER_ID);
         } else {
           Log.i("GCM", "Already registered");
+          Log.i("GCM", GCMRegistrar.getRegistrationId(this));
         }
     }
     
-    public static BlueHttpClient getClient(){
-    	return MainActivity.client;
-    }
+    private void checkLogin() {
+    	final Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+		if((!preferences.contains("token"))){
+			Log.e("Login", "No token found in preferences");
+			// User not logged in, redirect to login page
+			MainActivity.this.startActivity(loginIntent);
+		}
+		
+		else{
+			String token = preferences.getString("token", "");
+			
+			// The handler to handle the API response once the asynchronous http request returns.
+			HttpTaskHandler handler = new HttpTaskHandler(){
+				public void taskSuccessful(JSONObject json) {
+					try {
+						if(!json.getBoolean("success")){
+							Log.e("Login", "JSON response says login was unsuccessful");
+							MainActivity.this.startActivity(loginIntent);
+						}
+						else {
+							// user is logged in, probably redirect to profile page or something
+						}
+					} catch (JSONException e) {
+						Log.e("Login", "JSON response had no \"success\" value");
+						MainActivity.this.startActivity(loginIntent);
+					}
+				}
+
+				public void taskFailed() {
+					// TODO Auto-generated method stub
+					
+				}
+			};
+			
+			// Send the request.
+			getRequestManager().verifyToken(handler, token);
+	
+		}
+	}
+    
+    // Getters and Setters
     
     public static SharedPreferences getPreferences(){
     	return MainActivity.preferences;

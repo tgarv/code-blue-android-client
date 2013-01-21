@@ -2,8 +2,6 @@ package com.kalidu.codeblue.activities.blueMapActivity;
 
 import java.util.ArrayList;
 
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,10 +10,9 @@ import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
-import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.ViewQuestionActivity;
-import com.kalidu.codeblue.utils.BlueHttpClient;
 
+@SuppressWarnings("rawtypes")
 public class BlueItemizedOverlay extends ItemizedOverlay {
 	private ArrayList<BlueOverlayItem> mOverlays = new ArrayList<BlueOverlayItem>();
 	private Context mContext;
@@ -52,13 +49,8 @@ public class BlueItemizedOverlay extends ItemizedOverlay {
         	//get selected items
           	String questionId = Integer.toString(item.getId());
       		
-      		String url = MainActivity.getUrlManager().getViewQuestionURL(questionId);
-      		
-      		BlueHttpClient client = MainActivity.getClient();
-      		JSONObject j = client.httpGet(url);
-      		
       		Intent intent = new Intent(mContext, ViewQuestionActivity.class);
-      		intent.putExtra("questionJSON", j.toString());
+      		intent.putExtra("questionId", questionId);
       		mContext.startActivity(intent);
           }
       });

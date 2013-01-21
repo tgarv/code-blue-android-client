@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class BlueLocationListener implements LocationListener{
 	public void onLocationChanged(Location location){
@@ -24,9 +25,19 @@ public class BlueLocationListener implements LocationListener{
         editor.putFloat("longitude", (float) location.getLongitude());
         editor.commit();
         
+        HttpTaskHandler handler = new HttpTaskHandler(){
+			public void taskSuccessful(JSONObject json) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+        };
 		// And make the POST to update the location on the server.
-		JSONObject j = MainActivity.getRequestManager().setLocation(location);
-		Log.i("JSON", j.toString());
+		MainActivity.getRequestManager().setLocation(handler, location);
 	}
 	public void onProviderDisabled(String arg0) {
 		// TODO Auto-generated method stub

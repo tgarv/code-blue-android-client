@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 /**
  * 
@@ -73,8 +73,22 @@ public class CreateQuestionActivity extends Activity {
      */
     private void createQuestion(String title, String text){
     	String form_delta = "6";	// TODO make this changeable.
-    	JSONObject j = MainActivity.getRequestManager().createQuestion(title, text, form_delta);
-    	Log.i("Question", j.toString());
+    	
+    	// The handler to handle the API response after it returns
+		HttpTaskHandler handler = new HttpTaskHandler(){
+			public void taskSuccessful(JSONObject json) {
+				// Question created, redirect to question list
+				Intent intent = new Intent(CreateQuestionActivity.this, ListQuestionActivity.class);
+				startActivity(intent);
+			}
+
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
+    	MainActivity.getRequestManager().createQuestion(handler, title, text, form_delta);
     }
     
     /**

@@ -22,6 +22,7 @@ import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.CreateQuestionActivity;
 import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class BlueMapActivity extends MapActivity {
     private MapView mapView;
@@ -118,22 +119,32 @@ public class BlueMapActivity extends MapActivity {
 	 * Makes the HTTP Get request to get the list of questions, and then adds them as @BlueOverlayItem to the map
 	 */
 	public void addQuestions(){
-		String url = MainActivity.getUrlManager().getListQuestionsURL();
-    	JSONObject j = MainActivity.getClient().httpGet(url);
-    	try {
-			JSONArray questions = j.getJSONArray("questions");
-			for (int i=0; i<questions.length(); i++){
-				JSONObject question = questions.getJSONObject(i);
-				int latitude = (int) ((question.getDouble("latitude") * 1e6));
-				int longitude = (int) ((question.getDouble("longitude") * 1e6));
-				String title = question.getString("title");
-				String text = question.getString("text");
-				int id = question.getInt("id");
-				addPoint(latitude, longitude, title, text, "question", id);
+		
+    	HttpTaskHandler handler = new HttpTaskHandler(){
+			public void taskSuccessful(JSONObject json) {
+				// TODO Auto-generated method stub
+				try {
+					JSONArray questions = json.getJSONArray("questions");
+					for (int i=0; i<questions.length(); i++){
+						JSONObject question = questions.getJSONObject(i);
+						int latitude = (int) ((question.getDouble("latitude") * 1e6));
+						int longitude = (int) ((question.getDouble("longitude") * 1e6));
+						String title = question.getString("title");
+						String text = question.getString("text");
+						int id = question.getInt("id");
+						addPoint(latitude, longitude, title, text, "question", id);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+    	};
+    	MainActivity.getRequestManager().listQuestions(handler);
 	}
 }

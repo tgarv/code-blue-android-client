@@ -20,18 +20,20 @@ import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.models.Answer;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ViewQuestionActivity extends Activity {
 
     private static LinearLayout answerRoot;
 	private int questionId;
+	private JSONObject question;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_question);
-        JSONObject question = extractQuestionFromBundle();
-        setQuestionView(question);
+        extractQuestionFromBundle();
+        
         
         setListeners();
     }
@@ -75,20 +77,26 @@ public class ViewQuestionActivity extends Activity {
 	 * Get the Bundle associated with the Intent that created this Activity, and extract the Question from that Bundle.
 	 * Then, turn that into a JSONObject and set up the view.
 	 */
-	private JSONObject extractQuestionFromBundle(){
-		JSONObject question = null;
+	private void extractQuestionFromBundle(){
         Bundle b = this.getIntent().getExtras();
-        try {
-			int questionId = b.getInt("questionId");
-			question = MainActivity.getRequestManager().viewQuestion(questionId);;
-			setQuestionId(question.getInt("question_id"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        final int questionId = b.getInt("questionId");
         
-        ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
-        return question;
+        HttpTaskHandler handler = new HttpTaskHandler(){
+			public void taskSuccessful(JSONObject json) {
+				ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
+				setQuestion(json);
+				setQuestionId(questionId);
+				setQuestionView(json);
+			}
+
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        };
+        
+        MainActivity.getRequestManager().viewQuestion(handler, questionId);
 	}
     
     /**
@@ -143,23 +151,33 @@ public class ViewQuestionActivity extends Activity {
 				public void onClick(View v) {
 					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
 					int questionId = getQuestionId();
+					HttpTaskHandler handler = new HttpTaskHandler(){
+						public void taskSuccessful(JSONObject json) {
+							try {
+								if (json.getBoolean("success")){
+									// The Answer was successfully created, so update the view
+									JSONObject question = json.getJSONObject("question");
+									setQuestionView(question);
+									((EditText)findViewById(R.id.new_answer_text)).setText("");
+								}
+								else{
+									// TODO Create answer failed
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						public void taskFailed() {
+							// TODO Auto-generated method stub
+							
+						}
+					};
 					// Make the request to create an answer.
-					JSONObject j = MainActivity.getRequestManager().createAnswer(text, questionId);
+					MainActivity.getRequestManager().createAnswer(handler, text, questionId);
 					
-					try {
-						if (j.getBoolean("success")){
-							// The Answer was successfully created, so update the view
-							JSONObject question = j.getJSONObject("question");
-							setQuestionView(question);
-							((EditText)findViewById(R.id.new_answer_text)).setText("");
-						}
-						else{
-							// TODO failed
-						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
 				}
         		
         	}
@@ -180,5 +198,13 @@ public class ViewQuestionActivity extends Activity {
 
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
+	}
+
+	public JSONObject getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(JSONObject question) {
+		this.question = question;
 	}
 }

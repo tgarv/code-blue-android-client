@@ -1,9 +1,5 @@
 package com.kalidu.codeblue;
 
-import java.util.List;
-
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -26,12 +22,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		// TODO Auto-generated method stub
+		Log.i("GCM", "here");
 		Log.i("GCM", intent.getExtras().toString());
-		ActivityManager activityManager = (ActivityManager) this.getSystemService( ACTIVITY_SERVICE );
-	    List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
-	    for(int i = 0; i < procInfos.size(); i++){
-	    	Log.i("TEST", procInfos.get(i).processName);
-	    }
 	}
 
 	@Override

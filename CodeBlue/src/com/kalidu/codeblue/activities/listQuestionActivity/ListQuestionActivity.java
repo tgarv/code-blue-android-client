@@ -22,6 +22,7 @@ import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.ViewQuestionActivity;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.models.Question;
+import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ListQuestionActivity extends ListActivity {
 	private ArrayList<Question> questions;
@@ -31,8 +32,6 @@ public class ListQuestionActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         questions = new ArrayList<Question>(0);
         getQuestions();
-
-        setListAdapter(new QuestionAdapter(this, questions));
     }
 
     @Override
@@ -85,8 +84,23 @@ public class ListQuestionActivity extends ListActivity {
     
     // Make the GET request and add the questions to the List of Questions
     public void getQuestions(){
-    	String url = MainActivity.getUrlManager().getListQuestionsURL();
-    	JSONObject j = MainActivity.getClient().httpGet(url);
+    	HttpTaskHandler handler = new HttpTaskHandler(){
+			public void taskSuccessful(JSONObject json) {
+				handleResponse(json);
+		        setListAdapter(new QuestionAdapter(ListQuestionActivity.this, questions));
+			}
+
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+    		
+    	};
+    	MainActivity.getRequestManager().listQuestions(handler);
+
+    }
+    
+    private void handleResponse(JSONObject j){
     	Log.i("Questions", j.toString());
     	try {
 			JSONArray questions = j.getJSONArray("questions");
