@@ -140,7 +140,7 @@ public class MainActivity extends Activity {
 
 				public void taskFailed() {
 					// TODO Auto-generated method stub
-					
+					MainActivity.this.startActivity(loginIntent);
 				}
 			};
 			

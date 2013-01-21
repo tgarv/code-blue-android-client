@@ -22,7 +22,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		Log.i("GCM", "here");
 		Log.i("GCM", intent.getExtras().toString());
 	}
 
