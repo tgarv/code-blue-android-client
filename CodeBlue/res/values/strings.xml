@@ -10,5 +10,9 @@
     <string name="title_activity_create_question">Post a New Question</string>
     <string name="title_activity_view_question">ViewQuestionActivity</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="button_navbar_map">Map</string>
+    <string name="button_navbar_list">List</string>
+    <string name="button_navbar_profile">Profile</string>
+    <string name="button_navbar_new_question">Ask</string>
 
 </resources>

@@ -6,15 +6,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
@@ -24,31 +30,31 @@ import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
-public class BlueMapActivity extends MapActivity {
-    private MapView mapView;
+public class BlueMapActivity extends Activity {
+    private GoogleMap map;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
+        
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         
         final SharedPreferences preferences = MainActivity.getPreferences();
-        // The values stored for latitude and longitude are degrees, but the GeoPoint needs microdegrees
-        int latitude = (int) (preferences.getFloat("latitude", 0) * 1e6);
-        int longitude = (int) (preferences.getFloat("longitude", 0) * 1e6);
+        
+        int latitude = (int) (preferences.getFloat("latitude", 0));
+        int longitude = (int) (preferences.getFloat("longitude", 0));
+        LatLng center = new LatLng(latitude, longitude);
         
         // Add a marker for the user location
-        addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
+        //addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
         
         // Center the map on the user's location and set the zoom level
-        MapController controller = mapView.getController();
-        controller.setCenter(new GeoPoint(latitude, longitude));
-        controller.setZoom(16);
+        
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 16));
         
         // Add the questions to the map
-        addQuestions();
+        //addQuestions();
     }
 
     @Override
@@ -86,11 +92,6 @@ public class BlueMapActivity extends MapActivity {
     	}
     }
 
-	@Override
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	/**
 	 * 
@@ -103,14 +104,14 @@ public class BlueMapActivity extends MapActivity {
 	 * @return true if the point was successfully added
 	 */
 	public boolean addPoint(int latitude, int longitude, String title, String text, String type, int id){
-		GeoPoint point = new GeoPoint(latitude, longitude);
+		/*GeoPoint point = new GeoPoint(latitude, longitude);
         BlueOverlayItem overlay = new BlueOverlayItem(point, title, text, type, id);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable icon = this.getResources().getDrawable(R.drawable.marker);
         BlueItemizedOverlay itemizedOverlay = new BlueItemizedOverlay(icon, this);
         itemizedOverlay.addOverlay(overlay);
-        mapOverlays.add(itemizedOverlay);
+        mapOverlays.add(itemizedOverlay);*/
         
         return true;
 	}

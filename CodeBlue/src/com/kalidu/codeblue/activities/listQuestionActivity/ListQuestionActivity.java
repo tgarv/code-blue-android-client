@@ -30,6 +30,7 @@ public class ListQuestionActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_question);
         questions = new ArrayList<Question>(0);
         getQuestions();
     }

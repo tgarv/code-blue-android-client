@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/button_navbar_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:layout_marginLeft="-3dip"
+    	android:layout_marginRight="-3dip"
+    	android:drawableTop="@drawable/ic_menu_home"
+        android:text="@string/button_navbar_list" />
+    
+    <Button
+        android:id="@+id/button_navbar_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:layout_marginLeft="-3dip"
+    	android:layout_marginRight="-3dip"
+    	android:drawableTop="@drawable/ic_menu_mapmode"
+        android:text="@string/button_navbar_map" />
+
+    <Button
+        android:id="@+id/button_navbar_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:layout_marginLeft="-3dip"
+    	android:layout_marginRight="-3dip"
+    	android:drawableTop="@drawable/ic_menu_myplaces"
+        android:text="@string/button_navbar_profile" />
+
+    <Button
+        android:id="@+id/button_navbar_new_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:layout_marginLeft="-3dip"
+    	android:layout_marginRight="-3dip"
+    	android:drawableTop="@drawable/ic_menu_add"
+        android:text="@string/button_navbar_new_question" />
+
+</LinearLayout>
