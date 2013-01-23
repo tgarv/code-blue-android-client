@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.utils.ActionBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 /**
@@ -28,6 +29,10 @@ public class CreateQuestionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_question);
+        ActionBarBuilder builder = new ActionBarBuilder(this);
+        builder.setListeners();
+        Button button = (Button) findViewById(R.id.button_navbar_new_question);
+        button.setBackgroundColor(0xFFFFFFFF);
         setListeners();
     }
 

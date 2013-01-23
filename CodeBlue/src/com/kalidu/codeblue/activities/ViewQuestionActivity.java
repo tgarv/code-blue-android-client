@@ -20,6 +20,7 @@ import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.models.Answer;
+import com.kalidu.codeblue.utils.ActionBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ViewQuestionActivity extends Activity {
@@ -32,6 +33,8 @@ public class ViewQuestionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_question);
+        ActionBarBuilder builder = new ActionBarBuilder(this);
+        builder.setListeners();
         extractQuestionFromBundle();
         
         
