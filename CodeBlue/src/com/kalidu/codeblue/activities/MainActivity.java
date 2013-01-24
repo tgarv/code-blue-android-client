@@ -13,14 +13,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.BlueLocationListener;
@@ -39,7 +34,7 @@ public class MainActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
         MainActivity.preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         MainActivity.setUrlManager(new URLManager());
         MainActivity.setRequestManager(new RequestManager());
@@ -57,38 +52,8 @@ public class MainActivity extends Activity {
 		
 		checkLogin();
 		
-		
-		// Set the greeting
-		((TextView) findViewById(R.id.welcome)).setText("Welcome, " + preferences.getString("username", "stranger"));
-
-		// Set click listener for "View Questions" button
-		((Button) findViewById(R.id.launch_question_list)).setOnClickListener(
-			new OnClickListener(){
-				public void onClick(View arg0) {
-					Intent viewQuestionsIntent = new Intent(MainActivity.this, ListQuestionActivity.class);
-					MainActivity.this.startActivity(viewQuestionsIntent);
-				}
-			}
-		);
-		
-		// Set click listener for "New Question" button
-		((Button) findViewById(R.id.question_create)).setOnClickListener(
-			new OnClickListener(){
-				public void onClick(View arg0) {
-					Intent createQuestionIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
-					MainActivity.this.startActivity(createQuestionIntent);
-				}
-			}
-		);
-		
-		((Button) findViewById(R.id.launch_map)).setOnClickListener(
-			new OnClickListener(){
-				public void onClick(View arg0) {
-					Intent mapActivity = new Intent(MainActivity.this, BlueMapActivity.class);
-					MainActivity.this.startActivity(mapActivity);
-				}
-			}
-		);
+		Intent intent = new Intent(this, ListQuestionActivity.class);
+		startActivity(intent);
     }
 
 	@Override

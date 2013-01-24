@@ -35,16 +35,16 @@ public class BlueMapActivity extends Activity {
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        
-        final SharedPreferences preferences = MainActivity.getPreferences();
-        
-        int latitude = (int) (preferences.getFloat("latitude", 0));
-        int longitude = (int) (preferences.getFloat("longitude", 0));
-        LatLng center = new LatLng(latitude, longitude);
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_map);
+//        
+//        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+//        
+//        final SharedPreferences preferences = MainActivity.getPreferences();
+//        
+//        int latitude = (int) (preferences.getFloat("latitude", 0));
+//        int longitude = (int) (preferences.getFloat("longitude", 0));
+//        LatLng center = new LatLng(latitude, longitude);
         
         // Add a marker for the user location
         //addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0

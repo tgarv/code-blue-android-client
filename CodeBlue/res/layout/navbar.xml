@@ -34,14 +34,5 @@
     	android:drawableTop="@drawable/ic_menu_myplaces"
         android:text="@string/button_navbar_profile" />
 
-    <Button
-        android:id="@+id/button_navbar_new_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.25"
-        android:layout_marginLeft="-3dip"
-    	android:layout_marginRight="-3dip"
-    	android:drawableTop="@drawable/ic_menu_add"
-        android:text="@string/button_navbar_new_question" />
 
 </LinearLayout>

@@ -3,17 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <include android:id="@+id/header"
-         layout="@layout/header"
+    <include android:id="@+id/actionbar"
+         layout="@layout/actionbar"
          android:layout_height="wrap_content"
          android:layout_width="fill_parent"/>
+    
+    <include android:id="@+id/navbar"
+         layout="@layout/navbar"
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"
+         android:layout_below="@+id/actionbar"/>
     
     <EditText
         android:id="@+id/new_question_title"
         android:hint="Title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/navbar"
         android:layout_weight="1"/>
         
     <EditText

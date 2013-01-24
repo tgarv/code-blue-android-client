@@ -2,37 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background" >
-        
-    <TextView
-        android:id="@+id/welcome"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-        
-    <Button
-        android:id="@+id/launch_question_list"
-        android:text="View Questions"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/welcome"
-        android:layout_weight="1"/>
-        
-    <Button
-        android:id="@+id/question_create"
-        android:text="New Question"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/launch_question_list"
-        android:layout_weight="1"/>
-    
-    <Button
-        android:id="@+id/launch_map"
-        android:text="View Map"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/question_create"
-        android:layout_weight="1"/>
+    android:background="@drawable/background"
+    android:theme="@android:style/Theme.NoTitleBar" >
 
 </RelativeLayout>

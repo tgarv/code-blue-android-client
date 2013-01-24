@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 /**
@@ -82,7 +83,7 @@ public class LoginActivity extends Activity {
 				editor.commit();
 			
 				// Redirect to home page
-				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+				Intent intent = new Intent(LoginActivity.this, ListQuestionActivity.class);
 				LoginActivity.this.startActivity(intent);
 			}
 			else {

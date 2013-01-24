@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.kalidu.codeblue.activities.ViewQuestionActivity;
 import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.models.Question;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
+import com.kalidu.codeblue.utils.NavBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ListQuestionActivity extends ListActivity {
@@ -32,9 +34,12 @@ public class ListQuestionActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_list_question);
-        ActionBarBuilder builder = new ActionBarBuilder(this);
-        builder.setListeners();
+        NavBarBuilder navBuilder = new NavBarBuilder(this);
+        navBuilder.setListeners();
+        ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
+        actionBuilder.setListeners();
         Button button = (Button) findViewById(R.id.button_navbar_home);
         button.setBackgroundColor(0xFFFFFFFF);
         questions = new ArrayList<Question>(0);

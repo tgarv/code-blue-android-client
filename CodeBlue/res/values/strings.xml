@@ -14,5 +14,6 @@
     <string name="button_navbar_list">List</string>
     <string name="button_navbar_profile">Profile</string>
     <string name="button_navbar_new_question">Ask</string>
+    <string name="logo">CodeBlue</string>
 
 </resources>
