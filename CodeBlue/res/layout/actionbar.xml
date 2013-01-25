@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#0099CC"
@@ -22,7 +23,7 @@
 
     <ImageButton
         android:id="@+id/button_actionbar_add"
-        android:layout_width="48dp"
+        android:layout_width="36dp"
         android:layout_height="48dp"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
@@ -30,7 +31,7 @@
 
     <ImageButton
         android:id="@+id/button_actionbar_search"
-        android:layout_width="48dp"
+        android:layout_width="36dp"
         android:layout_height="48dp"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
