@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,9 @@ public class AsyncHttpClient extends AsyncTask<HttpUriRequest, Void, JSONObject>
 			response = this.client.execute(r);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HttpHostConnectException e){
+			// TOTO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

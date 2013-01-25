@@ -87,6 +87,7 @@ public class CreateQuestionActivity extends Activity {
 			public void taskSuccessful(JSONObject json) {
 				// Question created, redirect to question list
 				Intent intent = new Intent(CreateQuestionActivity.this, ListQuestionActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 			}
 

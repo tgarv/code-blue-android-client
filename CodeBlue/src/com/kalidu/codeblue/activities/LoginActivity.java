@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +54,7 @@ public class LoginActivity extends Activity {
 					// The handler to handle the API response after it returns
 					HttpTaskHandler handler = new HttpTaskHandler(){
 						public void taskSuccessful(JSONObject json) {
+							Log.i("Login", json.toString());
 							handleResponse(json);
 						}
 
@@ -72,9 +74,12 @@ public class LoginActivity extends Activity {
     
     private void handleResponse(JSONObject j){
     	try {
-			if(j.getBoolean("success")){	// Successfully verified
+    		JSONObject status = j.getJSONObject("status");
+    		Log.i("Login", status.toString());
+			if(status.getBoolean("success")){	// Successfully verified
 				// Store the username and token string in the shared preferences
-				String token = j.getString("token");
+				JSONObject data = status.getJSONObject("data");
+				String token = data.getString("token");
 				String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
 				Editor editor = MainActivity.getPreferences().edit();
 				
@@ -89,11 +94,13 @@ public class LoginActivity extends Activity {
 			else {
 				// Login failed, show errors and try again
 				// TODO
+				Log.i("Login", "Failed: " + j.toString());
 			}
 		} catch (JSONException e) {
 			// Login failed, show errors and try again
 			// TODO
-			
+			e.printStackTrace();
+			Log.i("Login", "Failed: " + j.toString());
 		}
     }
 }

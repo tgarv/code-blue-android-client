@@ -32,8 +32,6 @@ public class RequestManager {
 	}
 	
 	private HttpUriRequest getPOSTRequest(String url, List<NameValuePair> params){
-		// Every API post needs the token value, so add it here
-		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		HttpPost post = new HttpPost(url);
 		try {
 			post.setEntity(new UrlEncodedFormEntity(params));
@@ -52,6 +50,7 @@ public class RequestManager {
 		params.add(new BasicNameValuePair("form_delta", form_delta));
 		params.add(new BasicNameValuePair("title", title));
 		params.add(new BasicNameValuePair("query", query));
+		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		
 		AsyncHttpClient task = new AsyncHttpClient();
 		task.setTaskHandler(handler);
@@ -61,7 +60,7 @@ public class RequestManager {
 	
 	public void verifyCredentials(HttpTaskHandler handler, String username, String password){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-		params.add(new BasicNameValuePair("username", username));
+		params.add(new BasicNameValuePair("user_identifier", username));
 		params.add(new BasicNameValuePair("password", password));
 		
 		String url = MainActivity.getUrlManager().getVerifyCredentialsURL();
@@ -88,6 +87,7 @@ public class RequestManager {
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("text", text));
 		params.add(new BasicNameValuePair("question_id", Integer.toString(questionId)));
+		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		
 		String url = MainActivity.getUrlManager().getCreateAnswerURL();
 
@@ -120,6 +120,7 @@ public class RequestManager {
 		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Double.toString(location.getLongitude())));
 		params.add(new BasicNameValuePair("elevation", Double.toString(location.getAltitude())));
+		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		
 		String url = MainActivity.getUrlManager().getSetLocationURL();
 

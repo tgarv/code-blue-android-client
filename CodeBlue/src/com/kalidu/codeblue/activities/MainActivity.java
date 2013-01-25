@@ -43,17 +43,12 @@ public class MainActivity extends Activity {
         initGCM();
         
         // Set up the LocationManager to get location updates
-        MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		LocationListener locationListener = new BlueLocationListener();
-		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        initLocationManager();
 		
 		// Redirect to the login page if the sharedPreferences doesn't have a token string or if that string 
 		// isn't valid
 		
 		checkLogin();
-		
-		Intent intent = new Intent(this, ListQuestionActivity.class);
-		startActivity(intent);
     }
 
 	@Override
@@ -75,6 +70,12 @@ public class MainActivity extends Activity {
         }
     }
     
+    private void initLocationManager(){
+    	MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new BlueLocationListener();
+		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    }
+    
     private void checkLogin() {
     	final Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
 		if((!preferences.contains("token"))){
@@ -91,11 +92,14 @@ public class MainActivity extends Activity {
 				public void taskSuccessful(JSONObject json) {
 					try {
 						if(!json.getBoolean("success")){
+							Log.i("Login", json.toString());
 							Log.e("Login", "JSON response says login was unsuccessful");
 							MainActivity.this.startActivity(loginIntent);
 						}
 						else {
 							// user is logged in, probably redirect to profile page or something
+							Intent intent = new Intent(MainActivity.this, ListQuestionActivity.class);
+							startActivity(intent);
 						}
 					} catch (JSONException e) {
 						Log.e("Login", "JSON response had no \"success\" value");
