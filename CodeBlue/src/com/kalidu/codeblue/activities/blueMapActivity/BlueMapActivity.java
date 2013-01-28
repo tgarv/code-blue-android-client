@@ -76,7 +76,7 @@ public class BlueMapActivity extends MapActivity {
     		case R.id.menu_profile:
     			// TODO
     			return true;
-    		case R.id.menu_search:
+    		case R.id.menu_refresh:
     			// TODO
     			return true;
     		case R.id.menu_settings:

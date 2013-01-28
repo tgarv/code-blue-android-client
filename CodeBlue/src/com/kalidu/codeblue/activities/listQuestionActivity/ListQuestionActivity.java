@@ -43,7 +43,13 @@ public class ListQuestionActivity extends ListActivity {
         Button button = (Button) findViewById(R.id.button_navbar_home);
         button.setBackgroundColor(0xFFFFFFFF);
         questions = new ArrayList<Question>(0);
-        getQuestions();
+//        getQuestions();
+    }
+    
+    @Override
+    public void onResume(){
+    	super.onResume();
+    	getQuestions();
     }
 
     @Override
@@ -70,8 +76,8 @@ public class ListQuestionActivity extends ListActivity {
     		case R.id.menu_profile:
     			// TODO
     			return true;
-    		case R.id.menu_search:
-    			// TODO
+    		case R.id.menu_refresh:
+    			getQuestions();
     			return true;
     		case R.id.menu_settings:
     			// TODO
@@ -96,6 +102,7 @@ public class ListQuestionActivity extends ListActivity {
     
     // Make the GET request and add the questions to the List of Questions
     public void getQuestions(){
+    	this.questions = new ArrayList<Question>();
     	HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {
 				handleResponse(json);

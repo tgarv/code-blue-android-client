@@ -63,7 +63,7 @@ public class CreateQuestionActivity extends Activity {
     		case R.id.menu_profile:
     			// TODO
     			return true;
-    		case R.id.menu_search:
+    		case R.id.menu_refresh:
     			// TODO
     			return true;
     		case R.id.menu_settings:
