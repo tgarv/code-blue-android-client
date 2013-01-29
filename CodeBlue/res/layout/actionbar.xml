@@ -20,7 +20,18 @@
 
         <requestFocus />
     </TextView>
-
+	
+    <Button
+        android:id="@+id/button_actionbar_notification"
+        android:layout_width="36dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:drawable="@color/red"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="0"
+        android:textSize="20sp"
+        android:typeface="monospace" />
+    
     <ImageButton
         android:id="@+id/button_actionbar_add"
         android:layout_width="36dp"

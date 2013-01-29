@@ -30,6 +30,7 @@ import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ListQuestionActivity extends ListActivity {
 	private ArrayList<Question> questions;
+	private ActionBarBuilder actionBarBuilder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class ListQuestionActivity extends ListActivity {
         setContentView(R.layout.activity_list_question);
         NavBarBuilder navBuilder = new NavBarBuilder(this);
         navBuilder.setListeners();
-        ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
-        actionBuilder.setListeners();
+        this.actionBarBuilder = new ActionBarBuilder(this);
+        this.actionBarBuilder.setListeners();
         Button button = (Button) findViewById(R.id.button_navbar_home);
         button.setBackgroundColor(0xFFFFFFFF);
         questions = new ArrayList<Question>(0);
@@ -50,6 +51,7 @@ public class ListQuestionActivity extends ListActivity {
     public void onResume(){
     	super.onResume();
     	getQuestions();
+    	this.actionBarBuilder.setNotificationsCount();	// Update the notifications indicator on the action bar
     }
 
     @Override
@@ -102,6 +104,7 @@ public class ListQuestionActivity extends ListActivity {
     
     // Make the GET request and add the questions to the List of Questions
     public void getQuestions(){
+    	MainActivity.setNotificationsCount(0);	// Reset notifications, because we just got the most recent questions
     	this.questions = new ArrayList<Question>();
     	HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {

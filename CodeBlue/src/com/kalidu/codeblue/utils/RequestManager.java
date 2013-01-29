@@ -129,4 +129,17 @@ public class RequestManager {
 		HttpUriRequest request = getPOSTRequest(url, params);
 		task.execute(request);
 	}
+	
+	public void registerGCM(HttpTaskHandler handler, String regId){
+		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
+		params.add(new BasicNameValuePair("registration_id", regId));
+		
+		String url = MainActivity.getUrlManager().getRegisterGcmURL();
+		
+		AsyncHttpClient task = new AsyncHttpClient();
+		task.setTaskHandler(handler);
+		HttpUriRequest request = getPOSTRequest(url, params);
+		task.execute(request);
+	}
 }

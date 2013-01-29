@@ -2,9 +2,12 @@ package com.kalidu.codeblue;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import com.kalidu.codeblue.activities.MainActivity;
 
 
 public class GCMIntentService extends GCMBaseIntentService {
@@ -23,6 +26,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onMessage(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Log.i("GCM", intent.getExtras().toString());
+		Bundle b = intent.getExtras();
+		String data = b.getString("data");
+		if (data.equals("New message")){
+			Log.i("GCM", "New message!");
+			// Handle a new message alert
+			MainActivity.setNotificationsCount(MainActivity.getNotificationsCount()+1);
+			Intent i = new Intent();
+			i.setAction("com.kalidu.codeblue.NOTIFICATION");
+			sendBroadcast(i);
+		}
 	}
 
 	@Override

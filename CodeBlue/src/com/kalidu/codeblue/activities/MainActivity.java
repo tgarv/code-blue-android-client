@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 	private static LocationManager locationManager;
 	private static URLManager urlManager;
 	private static RequestManager requestManager;
+	private static int notificationsCount;
 	
 	static final String SENDER_ID = "164033855111";
 
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
         MainActivity.setUrlManager(new URLManager());
         MainActivity.setRequestManager(new RequestManager());
         Log.i("Prefs", preferences.getAll().toString());
+        MainActivity.setNotificationsCount(0);
         
         initGCM();
         
@@ -61,13 +63,28 @@ public class MainActivity extends Activity {
     	// Set up GCM Stuff
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
-        final String regId = GCMRegistrar.getRegistrationId(this);
+        String regId = GCMRegistrar.getRegistrationId(this);
         if (regId.equals("")) {
           GCMRegistrar.register(this, MainActivity.SENDER_ID);
         } else {
           Log.i("GCM", "Already registered");
-          Log.i("GCM", GCMRegistrar.getRegistrationId(this));
         }
+        regId = GCMRegistrar.getRegistrationId(this);
+        Log.i("GCM", regId);
+        
+        HttpTaskHandler handler = new HttpTaskHandler(){
+			@Override
+			public void taskSuccessful(JSONObject json) {
+				Log.i("GCM", "Registered to server");
+			}
+			@Override
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				Log.e("GCM", "Registration failed");
+			}
+        };
+        
+        getRequestManager().registerGCM(handler, regId);
     }
     
     private void initLocationManager(){
@@ -139,5 +156,13 @@ public class MainActivity extends Activity {
 
 	public static void setRequestManager(RequestManager requestManager) {
 		MainActivity.requestManager = requestManager;
+	}
+
+	public static int getNotificationsCount() {
+		return notificationsCount;
+	}
+
+	public static void setNotificationsCount(int notificationsCount) {
+		MainActivity.notificationsCount = notificationsCount;
 	}
 }

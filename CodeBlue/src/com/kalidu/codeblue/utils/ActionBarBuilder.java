@@ -1,30 +1,52 @@
 package com.kalidu.codeblue.utils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.CreateQuestionActivity;
+import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 
 public class ActionBarBuilder {
 	private Activity activity;
 
 	public ActionBarBuilder(Activity activity){
 		this.activity = activity;
+		IntentFilter filter = new IntentFilter("com.kalidu.codeblue.NOTIFICATION");
+		BroadcastReceiver receiver = new BroadcastReceiver(){
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				setNotificationsCount();
+			}
+			
+		};
+		activity.registerReceiver(receiver, filter);
 	}
 	
 	public void setListeners(){
+		((Button) activity.findViewById(R.id.button_actionbar_notification)).setOnClickListener(
+			new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					MainActivity.setNotificationsCount(0);
+					ActionBarBuilder.this.setNotificationsCount();
+					Intent intent = new Intent(ActionBarBuilder.this.activity, ListQuestionActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					activity.startActivity(intent);
+				}
+			}
+		);
+		
 		((ImageButton) activity.findViewById(R.id.button_actionbar_add)).setOnClickListener(
 			new OnClickListener(){
 
@@ -84,5 +106,11 @@ public class ActionBarBuilder {
 				}
 			}
 		);
+	}
+	
+	public void setNotificationsCount(){
+		Button button = (Button) activity.findViewById(R.id.button_actionbar_notification);
+		String count = Integer.toString(MainActivity.getNotificationsCount());
+		button.setText(count);
 	}
 }
