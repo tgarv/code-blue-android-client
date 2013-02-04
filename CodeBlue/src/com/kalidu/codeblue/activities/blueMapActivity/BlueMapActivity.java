@@ -33,6 +33,7 @@ public class BlueMapActivity extends MapActivity {
         setContentView(R.layout.activity_map);
         
         mapView = (MapView)findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
         
         final SharedPreferences preferences = MainActivity.getPreferences();
         
@@ -41,7 +42,7 @@ public class BlueMapActivity extends MapActivity {
         GeoPoint center = new GeoPoint(latitude, longitude);
         
         // Add a marker for the user location
-        //addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
+        addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
         
         // Center the map on the user's location and set the zoom level
         MapController controller = mapView.getController();
@@ -49,7 +50,7 @@ public class BlueMapActivity extends MapActivity {
         controller.setZoom(16);
         
         // Add the questions to the map
-        //addQuestions();
+        addQuestions();
     }
 
     @Override

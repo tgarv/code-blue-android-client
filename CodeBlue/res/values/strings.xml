@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">CodeBlue</string>
@@ -15,5 +16,6 @@
     <string name="button_navbar_profile">Profile</string>
     <string name="button_navbar_new_question">Ask</string>
     <string name="logo">CodeBlue</string>
+    <string name="title_activity_map_test">MapTest</string>
 
 </resources>
