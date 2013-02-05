@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -37,8 +38,10 @@ public class BlueMapActivity extends MapActivity {
         
         final SharedPreferences preferences = MainActivity.getPreferences();
         
-        int latitude = (int) ((int) (preferences.getFloat("latitude", 0))*1e6);
-        int longitude = (int) ((int) (preferences.getFloat("longitude", 0))*1e6);
+        int latitude = (int) ((preferences.getFloat("latitude", 0))*1e6);
+        int longitude = (int) ((preferences.getFloat("longitude", 0))*1e6);
+        Log.i("TEST", Integer.toString(latitude));
+        Log.i("TEST", Integer.toString(longitude));
         GeoPoint center = new GeoPoint(latitude, longitude);
         
         // Add a marker for the user location
