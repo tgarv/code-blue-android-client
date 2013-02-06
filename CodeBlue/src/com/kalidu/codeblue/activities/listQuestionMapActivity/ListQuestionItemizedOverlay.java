@@ -1,4 +1,4 @@
-package com.kalidu.codeblue.activities.blueMapActivity;
+package com.kalidu.codeblue.activities.listQuestionMapActivity;
 
 import java.util.ArrayList;
 
@@ -13,11 +13,11 @@ import com.google.android.maps.OverlayItem;
 import com.kalidu.codeblue.activities.ViewQuestionActivity;
 
 @SuppressWarnings("rawtypes")
-public class BlueItemizedOverlay extends ItemizedOverlay {
-	private ArrayList<BlueOverlayItem> mOverlays = new ArrayList<BlueOverlayItem>();
+public class ListQuestionItemizedOverlay extends ItemizedOverlay {
+	private ArrayList<ListQuestionOverlayItem> mOverlays = new ArrayList<ListQuestionOverlayItem>();
 	private Context mContext;
 	
-	public BlueItemizedOverlay(Drawable defaultMarker, Context context) {
+	public ListQuestionItemizedOverlay(Drawable defaultMarker, Context context) {
 		super(boundCenterBottom(defaultMarker));
 		mContext = context;
 	}
@@ -32,14 +32,14 @@ public class BlueItemizedOverlay extends ItemizedOverlay {
 		return mOverlays.size();
 	}
 	
-	public void addOverlay(BlueOverlayItem overlay) {
+	public void addOverlay(ListQuestionOverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
 	}
 	
 	@Override
 	protected boolean onTap(int index) {
-	  final BlueOverlayItem item = mOverlays.get(index);
+	  final ListQuestionOverlayItem item = mOverlays.get(index);
 	  AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 	  builder.setTitle(item.getTitle());
 	  builder.setMessage(item.getSnippet());

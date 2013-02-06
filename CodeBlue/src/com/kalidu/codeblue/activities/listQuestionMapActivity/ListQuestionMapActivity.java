@@ -1,4 +1,4 @@
-package com.kalidu.codeblue.activities.blueMapActivity;
+package com.kalidu.codeblue.activities.listQuestionMapActivity;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import com.kalidu.codeblue.activities.MainActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
-public class BlueMapActivity extends MapActivity {
+public class ListQuestionMapActivity extends MapActivity {
 	private MapView mapView;
 
 	@Override
@@ -74,7 +74,7 @@ public class BlueMapActivity extends MapActivity {
 				this.startActivity(questionsListIntent);
 				return true;
     		case R.id.menu_questions_map:
-    			Intent questionsMapIntent = new Intent(this, BlueMapActivity.class);
+    			Intent questionsMapIntent = new Intent(this, ListQuestionMapActivity.class);
 				this.startActivity(questionsMapIntent);
 				return true;
     		case R.id.menu_profile:
@@ -104,11 +104,11 @@ public class BlueMapActivity extends MapActivity {
 	 */
 	public boolean addPoint(int latitude, int longitude, String title, String text, String type, int id){
 		GeoPoint point = new GeoPoint(latitude, longitude);
-        BlueOverlayItem overlay = new BlueOverlayItem(point, title, text, type, id);
+        ListQuestionOverlayItem overlay = new ListQuestionOverlayItem(point, title, text, type, id);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable icon = this.getResources().getDrawable(R.drawable.marker);
-        BlueItemizedOverlay itemizedOverlay = new BlueItemizedOverlay(icon, this);
+        ListQuestionItemizedOverlay itemizedOverlay = new ListQuestionItemizedOverlay(icon, this);
         itemizedOverlay.addOverlay(overlay);
         mapOverlays.add(itemizedOverlay);
         

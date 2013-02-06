@@ -8,8 +8,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 
 public class NavBarBuilder {
 	
@@ -35,7 +35,7 @@ public class NavBarBuilder {
 				new OnClickListener(){
 					@Override
 					public void onClick(View arg0) {
-						Intent intent = new Intent(NavBarBuilder.this.activity, BlueMapActivity.class);
+						Intent intent = new Intent(NavBarBuilder.this.activity, ListQuestionMapActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						activity.startActivity(intent);
 					}

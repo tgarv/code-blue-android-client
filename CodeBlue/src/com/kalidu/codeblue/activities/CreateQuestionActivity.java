@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.activities.blueMapActivity.BlueMapActivity;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
 import com.kalidu.codeblue.utils.NavBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
@@ -57,7 +57,7 @@ public class CreateQuestionActivity extends Activity {
 				this.startActivity(questionsListIntent);
 				return true;
     		case R.id.menu_questions_map:
-    			Intent questionsMapIntent = new Intent(this, BlueMapActivity.class);
+    			Intent questionsMapIntent = new Intent(this, ListQuestionMapActivity.class);
 				this.startActivity(questionsMapIntent);
 				return true;
     		case R.id.menu_profile:
