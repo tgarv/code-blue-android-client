@@ -2,6 +2,7 @@ package com.kalidu.codeblue.utils;
 
 import java.io.IOException;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -10,7 +11,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.kalidu.codeblue.activities.MainActivity;
+
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class AsyncHttpClient extends AsyncTask<HttpUriRequest, Void, JSONObject>{
 	private DefaultHttpClient client = new DefaultHttpClient();
@@ -34,6 +39,18 @@ public class AsyncHttpClient extends AsyncTask<HttpUriRequest, Void, JSONObject>
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		// Store the Set-Cookie information for the session
+		Header[] headers = response.getHeaders("Set-Cookie");
+		if (headers.length >0 ){
+			String header = headers[0].getValue();
+			String[] parts = header.split("\"");
+			String session = parts[0] + "\"" + parts[1] + "\"";
+			Log.i("TEST", session);
+			Editor editor = MainActivity.getPreferences().edit();
+			editor.putString("session", session);
+			editor.commit();
 		}
 		
 		// Convert the response into a JSONObject
