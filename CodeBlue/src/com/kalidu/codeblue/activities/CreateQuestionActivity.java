@@ -85,7 +85,9 @@ public class CreateQuestionActivity extends Activity {
     	// The handler to handle the API response after it returns
 		HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {
-				// Question created, redirect to question list
+				// Question created, redirect to question list and clear the inputs
+				((TextView) findViewById(R.id.new_question_title)).setText("");
+				((TextView) findViewById(R.id.new_question_text)).setText("");
 				Intent intent = new Intent(CreateQuestionActivity.this, ListQuestionActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
