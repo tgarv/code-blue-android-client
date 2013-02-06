@@ -128,11 +128,13 @@ public class ListQuestionActivity extends ListActivity {
 			JSONArray questions = j.getJSONArray("questions");
 			for(int i=0; i < questions.length(); i++){
 				JSONObject question = questions.getJSONObject(i);
-				Log.i("Question", question.toString());
+				JSONObject user = question.getJSONObject("user");
+				String username = user.getString("username");
 				String title = question.getString("title");
 				String text = question.getString("text");
 				int id = question.getInt("id");
-				ListQuestionActivity.this.questions.add(new Question(0, id, title, text));
+				String datetime = question.getString("datetime");
+				ListQuestionActivity.this.questions.add(new Question(0, id, title, text, username, datetime));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

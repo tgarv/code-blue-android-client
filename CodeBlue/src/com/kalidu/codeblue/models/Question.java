@@ -12,12 +12,16 @@ public class Question {
 	private String title;
 	private String text;
 	private final int userId;
+	private String username;
+	private String datetime;
 
-	public Question(int userId, int questionId, String title, String text) {
+	public Question(int userId, int questionId, String title, String text, String username, String datetime) {
 		this.userId = userId;
 		this.questionId = questionId;
 		this.setTitle(title);
 		this.setText(text);
+		this.setUsername(username);
+		this.setDatetime(datetime);
 	}
 	
 	public int getQuestionId() {
@@ -42,5 +46,21 @@ public class Question {
 	
 	public int getUserId() {
 		return userId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
 	}
 }
