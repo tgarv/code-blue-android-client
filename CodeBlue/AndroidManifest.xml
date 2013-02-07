@@ -59,6 +59,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            android:windowSoftInputMode="adjustResize"
         </activity>
         <activity
             android:name="com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity"

@@ -4,28 +4,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.models.Answer;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
-import com.kalidu.codeblue.utils.NavBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
+import com.kalidu.codeblue.utils.NavBarBuilder;
 
-public class ViewQuestionActivity extends Activity {
+public class ViewQuestionActivity extends MapActivity {
 
     private static LinearLayout answerRoot;
 	private int questionId;
@@ -36,10 +39,10 @@ public class ViewQuestionActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_view_question);
-        NavBarBuilder navBuilder = new NavBarBuilder(this);
+        /*NavBarBuilder navBuilder = new NavBarBuilder(this);
         navBuilder.setListeners();
         ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
-        actionBuilder.setListeners();
+        actionBuilder.setListeners();*/
         extractQuestionFromBundle();
         
         
@@ -185,11 +188,35 @@ public class ViewQuestionActivity extends Activity {
 					// Make the request to create an answer.
 					MainActivity.getRequestManager().createAnswer(handler, text, questionId);
 					
+					MapView mv = (MapView) findViewById(R.id.mapview);
+					mv.setVisibility(View.VISIBLE);
+					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
+					actionBar.setVisibility(View.VISIBLE);
+					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
+					navBar.setVisibility(View.VISIBLE);
 					
+					InputMethodManager imm = (InputMethodManager)getSystemService(
+							Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(mv.getWindowToken(), 0);
 				}
         		
         	}
         );
+        
+        ((EditText) findViewById(R.id.new_answer_text)).setOnClickListener(
+    		new OnClickListener(){
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					MapView mv = (MapView) findViewById(R.id.mapview);
+					mv.setVisibility(View.GONE);
+					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
+					actionBar.setVisibility(View.GONE);
+					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
+					navBar.setVisibility(View.GONE);
+				}
+    		}
+    	);
 	}
 	
 	public static LinearLayout getAnswerRoot() {
@@ -214,5 +241,11 @@ public class ViewQuestionActivity extends Activity {
 
 	public void setQuestion(JSONObject question) {
 		this.question = question;
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
