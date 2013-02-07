@@ -13,13 +13,22 @@
          android:layout_height="wrap_content"
          android:layout_width="fill_parent"
          android:layout_below="@+id/actionbar"/>
+         
+    <com.google.android.maps.MapView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/mapview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="150dp"
+	    android:layout_below="@+id/navbar"
+	    android:clickable="true"
+	    android:apiKey="0PWjr2oEn_UAvt2jUlukZm9eokcmpLZ4dVV_S-Q"/>
     
     <EditText
         android:id="@+id/new_question_title"
         android:hint="Title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/navbar"
+        android:layout_below="@+id/mapview"
         android:layout_weight="1"/>
         
     <EditText
@@ -28,7 +37,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/new_question_title"
-        android:lines="5"
+        android:lines="3"
         android:layout_weight="1"/>
         
     <Button

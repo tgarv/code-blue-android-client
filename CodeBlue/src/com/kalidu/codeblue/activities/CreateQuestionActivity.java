@@ -2,9 +2,10 @@ package com.kalidu.codeblue.activities;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +14,17 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+import com.google.android.maps.OverlayItem;
+import com.kalidu.codeblue.CreateQuestionItemizedOverlay;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
-import com.kalidu.codeblue.utils.NavBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
+import com.kalidu.codeblue.utils.NavBarBuilder;
 
 /**
  * 
@@ -26,7 +32,8 @@ import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
  * The activity that allows a user to create a new question using a form.
  * 
  */
-public class CreateQuestionActivity extends Activity {
+public class CreateQuestionActivity extends MapActivity {
+	private MapView mapView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,14 @@ public class CreateQuestionActivity extends Activity {
         ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
         actionBuilder.setListeners();
         setListeners();
+        
+        // Set up the map and overlay
+        Drawable marker = getResources().getDrawable(R.drawable.marker);
+        marker.setBounds(-marker.getIntrinsicWidth()/2, -marker.getIntrinsicHeight(), 
+        		marker.getIntrinsicWidth()/2, 0);
+        
+        this.setMapView((MapView) findViewById(R.id.mapview));
+        this.getMapView().getOverlays().add(new CreateQuestionItemizedOverlay(marker));
     }
 
     @Override
@@ -98,8 +113,16 @@ public class CreateQuestionActivity extends Activity {
 				
 			}
 		};
-		
-    	MainActivity.getRequestManager().createQuestion(handler, title, text, form_delta);
+		// Get the position used to mark the location of the question
+		CreateQuestionItemizedOverlay overlay = (CreateQuestionItemizedOverlay)this.getMapView().
+				getOverlays().get(this.getMapView().getOverlays().size()-1);
+		OverlayItem item = overlay.getItem(overlay.size()-1);
+		GeoPoint point = item.getPoint();
+		double latitude = point.getLatitudeE6()/(double)1e6;
+		double longitude = point.getLongitudeE6()/(double)1e6;
+		Log.i("TEST", "Need to create question at: " + Double.toString(latitude) + ", " + Double.toString(longitude));
+		// Make the request
+//    	MainActivity.getRequestManager().createQuestion(handler, title, text, form_delta);
     }
     
     /**
@@ -117,4 +140,18 @@ public class CreateQuestionActivity extends Activity {
     		}
     	);
     }
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public MapView getMapView() {
+		return mapView;
+	}
+
+	public void setMapView(MapView mapView) {
+		this.mapView = mapView;
+	}
 }
