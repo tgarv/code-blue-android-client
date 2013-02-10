@@ -3,11 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
+    <include android:id="@+id/actionbar"
+         layout="@layout/actionbar"
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"/>
+    
+    <include android:id="@+id/navbar"
+         layout="@layout/navbar"
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"
+         android:layout_below="@+id/actionbar"/>
+    
     <com.google.android.maps.MapView
 	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/mapview"
 	    android:layout_width="fill_parent"
 	    android:layout_height="150dp"
+	    android:layout_below="@+id/navbar"
 	    android:clickable="true"
 	    android:apiKey="0PWjr2oEn_UAvt2jUlukZm9eokcmpLZ4dVV_S-Q"/>
     

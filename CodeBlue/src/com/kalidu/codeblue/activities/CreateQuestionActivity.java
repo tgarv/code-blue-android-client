@@ -39,19 +39,16 @@ public class CreateQuestionActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_create_question);
+        
+        // Initialize the navbar and action bar
         NavBarBuilder navBuilder = new NavBarBuilder(this);
         navBuilder.setListeners();
         ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
         actionBuilder.setListeners();
         setListeners();
         
-        // Set up the map and overlay
-        Drawable marker = getResources().getDrawable(R.drawable.marker);
-        marker.setBounds(-marker.getIntrinsicWidth()/2, -marker.getIntrinsicHeight(), 
-        		marker.getIntrinsicWidth()/2, 0);
-        
-        this.setMapView((MapView) findViewById(R.id.mapview));
-        this.getMapView().getOverlays().add(new CreateQuestionItemizedOverlay(marker));
+        // Initialize the map
+        mapInit();
     }
 
     @Override
@@ -139,6 +136,15 @@ public class CreateQuestionActivity extends MapActivity {
     			}
     		}
     	);
+    }
+    
+    private void mapInit(){
+    	Drawable marker = getResources().getDrawable(R.drawable.marker);
+        marker.setBounds(-marker.getIntrinsicWidth()/2, -marker.getIntrinsicHeight(), 
+        		marker.getIntrinsicWidth()/2, 0);
+        
+        this.setMapView((MapView) findViewById(R.id.mapview));
+        this.getMapView().getOverlays().add(new CreateQuestionItemizedOverlay(marker));
     }
 
 	@Override

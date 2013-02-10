@@ -6,7 +6,9 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +20,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.ViewQuestionItemizedOverlay;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.models.Answer;
@@ -39,12 +44,14 @@ public class ViewQuestionActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_view_question);
-        /*NavBarBuilder navBuilder = new NavBarBuilder(this);
+        
+        // Initialize the navbar and action bar
+        NavBarBuilder navBuilder = new NavBarBuilder(this);
         navBuilder.setListeners();
         ActionBarBuilder actionBuilder = new ActionBarBuilder(this);
-        actionBuilder.setListeners();*/
-        extractQuestionFromBundle();
+        actionBuilder.setListeners();
         
+        extractQuestionFromBundle();
         
         setListeners();
     }
@@ -94,10 +101,12 @@ public class ViewQuestionActivity extends MapActivity {
         
         HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {
+				Log.i("TEST", json.toString());
 				ViewQuestionActivity.setAnswerRoot(((LinearLayout) findViewById(R.id.answers)));
 				setQuestion(json);
 				setQuestionId(questionId);
 				setQuestionView(json);
+				mapInit();
 			}
 
 			public void taskFailed() {
@@ -217,6 +226,32 @@ public class ViewQuestionActivity extends MapActivity {
 				}
     		}
     	);
+	}
+	
+	public void mapInit(){
+		MapView mapView = (MapView) findViewById(R.id.mapview);
+		
+		JSONObject question = getQuestion();
+		int latitude = 0;
+		int longitude = 0;
+		try {
+			latitude = (int)(question.getDouble("latitude")*1e6);
+			longitude = (int)(question.getDouble("longitude")*1e6);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		GeoPoint questionLocation = new GeoPoint(latitude, longitude);
+		Drawable marker = getResources().getDrawable(R.drawable.marker);
+		marker.setBounds(-marker.getIntrinsicWidth()/2, -marker.getIntrinsicHeight(), 
+        		marker.getIntrinsicWidth()/2, 0);
+		
+		mapView.getOverlays().add(new ViewQuestionItemizedOverlay(marker, questionLocation));
+		mapView.setBuiltInZoomControls(true);
+		MapController mc = mapView.getController();
+		mc.setZoom(16);
+		mc.setCenter(questionLocation);
 	}
 	
 	public static LinearLayout getAnswerRoot() {
