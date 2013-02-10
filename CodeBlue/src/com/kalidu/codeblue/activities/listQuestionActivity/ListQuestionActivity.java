@@ -93,7 +93,7 @@ public class ListQuestionActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
  
 		//get selected items
-    	int questionId = ((Question)(getListAdapter().getItem(position))).getQuestionId();
+    	int questionId = ((Question)(getListAdapter().getItem(position))).getId();
 		String selectedValue = "Question " + questionId;
 		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
 		
@@ -134,7 +134,7 @@ public class ListQuestionActivity extends ListActivity {
 				String text = question.getString("text");
 				int id = question.getInt("id");
 				String datetime = question.getString("datetime");
-				ListQuestionActivity.this.questions.add(new Question(0, id, title, text, username, datetime));
+				ListQuestionActivity.this.questions.add(new Question(0, 0, "Test", "Test", 0.0, 0.0));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

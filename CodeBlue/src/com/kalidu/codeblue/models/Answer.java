@@ -12,41 +12,18 @@ import android.widget.TextView;
  */
 public class Answer {
 
-	private final int answerId;
+	private int id;
 	private String text;
-	private int score;
-	private final int userId;
+	private int userId;
+	private int questionId;
 
-	public Answer(int userId, int answerId, String text, int score) {
-		this.userId = userId;
-		this.answerId = answerId;
+	public Answer(int answerId, int userId, String text, int questionId) {
+		this.setId(answerId);
+		this.setUserId(userId);
 		this.setText(text);
-		this.setScore(score);
+		this.setQuestionId(questionId);
 	}
 
-	public int getAnswerId() {
-		return answerId;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
 	
 	public LinearLayout getView(Context c){
 		LinearLayout ll = new LinearLayout(c);
@@ -55,6 +32,46 @@ public class Answer {
 		ll.addView(text);
 		ll.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		return ll;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public String getText() {
+		return text;
+	}
+
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+
+	public int getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
 
 }

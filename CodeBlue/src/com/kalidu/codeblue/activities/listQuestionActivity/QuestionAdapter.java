@@ -41,10 +41,10 @@ public class QuestionAdapter extends BaseAdapter {
 		View questionView = mInflater.inflate(layout, parent, false);
 		
 		TextView author = (TextView) questionView.findViewById(R.id.question_author);
-		author.setText(question.getUsername());
+		author.setText("TEST");
 		
 		TextView date = (TextView) questionView.findViewById(R.id.question_time);
-		date.setText(question.getDatetime());
+		date.setText("Tuesday");
 		
 		TextView title = (TextView) questionView.findViewById(R.id.question_title);
 		title.setText(question.getTitle());

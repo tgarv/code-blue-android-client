@@ -1,5 +1,7 @@
 package com.kalidu.codeblue.models;
 
+import java.util.List;
+
 
 /**
  * 
@@ -8,59 +10,82 @@ package com.kalidu.codeblue.models;
  */
 public class Question {
 
-	private final int questionId;
-	private String title;
 	private String text;
-	private final int userId;
-	private String username;
-	private String datetime;
+	private List<Answer> answers;
+	private int id;
+	private int userId;
+	private double latitude;
+	private double longitude;
+	private String title;
+//	private User author;
 
-	public Question(int userId, int questionId, String title, String text, String username, String datetime) {
-		this.userId = userId;
-		this.questionId = questionId;
+	public Question(int questionId, int userId, String title, String text, double latitude, 
+			double longitude) {
+		this.setUserId(userId);
+		this.setId(questionId);
 		this.setTitle(title);
 		this.setText(text);
-		this.setUsername(username);
-		this.setDatetime(datetime);
+		this.setLatitude(latitude);
+		this.setLongitude(longitude);
 	}
-	
-	public int getQuestionId() {
-	return questionId;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
+
 	public String getText() {
 		return text;
 	}
 	
-	public void setText(String text) {
+	public void setText(String text){
 		this.text = text;
 	}
+
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
 	
+	public void addAnswer(Answer answer){
+		this.answers.add(answer);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getUserId() {
 		return userId;
 	}
 
-	public String getUsername() {
-		return username;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public String getDatetime() {
-		return datetime;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
-	public void setDatetime(String datetime) {
-		this.datetime = datetime;
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

@@ -43,7 +43,7 @@ public class ListQuestionItemizedOverlay extends ItemizedOverlay {
 	  AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 	  builder.setTitle(item.getTitle());
 	  
-	  //TODO this is a hack to treat the user different than the questions
+	  //TODO this is a hack to treat the user different than the questions, fix the hack
 	  if (item.getTitle() != "That's you!"){
 		  builder.setMessage(item.getSnippet());
 		  builder.setNeutralButton("View Answers", new DialogInterface.OnClickListener() {
