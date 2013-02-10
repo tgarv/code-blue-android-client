@@ -42,18 +42,21 @@ public class ListQuestionItemizedOverlay extends ItemizedOverlay {
 	  final ListQuestionOverlayItem item = mOverlays.get(index);
 	  AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 	  builder.setTitle(item.getTitle());
-	  builder.setMessage(item.getSnippet());
 	  
-	  builder.setNeutralButton("View Answers", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int id) {
-        	//get selected items
-          	String questionId = Integer.toString(item.getId());
-      		
-      		Intent intent = new Intent(mContext, ViewQuestionActivity.class);
-      		intent.putExtra("questionId", questionId);
-      		mContext.startActivity(intent);
-          }
-      });
+	  //TODO this is a hack to treat the user different than the questions
+	  if (item.getTitle() != "That's you!"){
+		  builder.setMessage(item.getSnippet());
+		  builder.setNeutralButton("View Answers", new DialogInterface.OnClickListener() {
+	          public void onClick(DialogInterface dialog, int id) {
+	        	//get selected items
+	          	String questionId = Integer.toString(item.getId());
+	      		
+	      		Intent intent = new Intent(mContext, ViewQuestionActivity.class);
+	      		intent.putExtra("questionId", questionId);
+	      		mContext.startActivity(intent);
+	          }
+	      });
+	  }
 	  
 	  AlertDialog d = builder.create();
 	  d.setCanceledOnTouchOutside(true);	// The dialog will close if you tap outside of it.

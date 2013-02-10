@@ -45,7 +45,8 @@ public class ListQuestionMapActivity extends MapActivity {
         GeoPoint center = new GeoPoint(latitude, longitude);
         
         // Add a marker for the user location
-        addPoint(latitude, longitude, "That's you!", "Yeah!", "user", 0);	// TODO userId is always 0
+        Drawable marker = getResources().getDrawable(R.drawable.marker_green);
+        addPoint(latitude, longitude, "That's you!", "Yeah!", "user", marker, 0);	// TODO userId is always 0
         
         // Center the map on the user's location and set the zoom level
         MapController controller = mapView.getController();
@@ -102,13 +103,13 @@ public class ListQuestionMapActivity extends MapActivity {
 	 * @param id the id of the question if type == "question", otherwise nothing interesting (0) for now
 	 * @return true if the point was successfully added
 	 */
-	public boolean addPoint(int latitude, int longitude, String title, String text, String type, int id){
+	public boolean addPoint(int latitude, int longitude, String title, String text, String type, 
+			Drawable marker, int id){
 		GeoPoint point = new GeoPoint(latitude, longitude);
         ListQuestionOverlayItem overlay = new ListQuestionOverlayItem(point, title, text, type, id);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
-        Drawable icon = this.getResources().getDrawable(R.drawable.marker);
-        ListQuestionItemizedOverlay itemizedOverlay = new ListQuestionItemizedOverlay(icon, this);
+        ListQuestionItemizedOverlay itemizedOverlay = new ListQuestionItemizedOverlay(marker, this);
         itemizedOverlay.addOverlay(overlay);
         mapOverlays.add(itemizedOverlay);
         
@@ -132,7 +133,8 @@ public class ListQuestionMapActivity extends MapActivity {
 						String title = question.getString("title");
 						String text = question.getString("text");
 						int id = question.getInt("id");
-						addPoint(latitude, longitude, title, text, "question", id);
+						Drawable marker = getResources().getDrawable(R.drawable.marker);
+						addPoint(latitude, longitude, title, text, "question", marker, id);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
