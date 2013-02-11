@@ -58,24 +58,12 @@ public class RequestManager {
 		task.execute(request);
 	}
 	
-	public void verifyCredentials(HttpTaskHandler handler, String username, String password){
+	public void login(HttpTaskHandler handler, String username, String password){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("user_identifier", username));
 		params.add(new BasicNameValuePair("password", password));
 		
-		String url = MainActivity.getUrlManager().getVerifyCredentialsURL();
-		
-		AsyncHttpClient task = new AsyncHttpClient();
-		task.setTaskHandler(handler);
-		HttpUriRequest request = getPOSTRequest(url, params);
-		task.execute(request);
-	}
-	
-	public void verifyToken(HttpTaskHandler handler, String token){
-		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-		params.add(new BasicNameValuePair("token", token));
-		
-		String url = MainActivity.getUrlManager().getVerifyTokenURL();
+		String url = MainActivity.getUrlManager().getLoginURL();
 		
 		AsyncHttpClient task = new AsyncHttpClient();
 		task.setTaskHandler(handler);

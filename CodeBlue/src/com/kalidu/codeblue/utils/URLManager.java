@@ -8,10 +8,10 @@ package com.kalidu.codeblue.utils;
  * 
  */
 public class URLManager {
+//	private String base = "http://10.0.2.2:5000/api/";
 	private String base = "http://10.0.2.2:5000/api/";
 	private String androidBase = "http://10.0.2.2:5000/api/android/";
-	private String verifyToken = "verify_token.json";
-	private String verifyCredentials = "user/verify_credentials.json";
+	private String login = "user_authenticate";
 	private String setLocation = "user/set_location.json";
 	private String listQuestions = "question/list.json";
 	private String createQuestion = "question/create.json";
@@ -19,12 +19,8 @@ public class URLManager {
 	private String createAnswer = "answer/create.json";
 	private String registerGCM = "user/register_gcm.json";
 	
-	public String getVerifyTokenURL(){
-		return androidBase + verifyToken;
-	}
-	
-	public String getVerifyCredentialsURL(){
-		return base + verifyCredentials;
+	public String getLoginURL(){
+		return base + login;
 	}
 	
 	public String getSetLocationURL(){

@@ -95,45 +95,8 @@ public class MainActivity extends Activity {
     
     private void checkLogin() {
     	final Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-		if((!preferences.contains("token"))){
-			Log.e("Login", "No token found in preferences");
-			// User not logged in, redirect to login page
-			MainActivity.this.startActivity(loginIntent);
-		}
+		this.startActivity(loginIntent);
 		
-		else{
-			String token = preferences.getString("token", "");
-			
-			// The handler to handle the API response once the asynchronous http request returns.
-			HttpTaskHandler handler = new HttpTaskHandler(){
-				public void taskSuccessful(JSONObject json) {
-					try {
-						if(!json.getBoolean("success")){
-							Log.i("Login", json.toString());
-							Log.e("Login", "JSON response says login was unsuccessful");
-							MainActivity.this.startActivity(loginIntent);
-						}
-						else {
-							// user is logged in, probably redirect to profile page or something
-							Intent intent = new Intent(MainActivity.this, ListQuestionActivity.class);
-							startActivity(intent);
-						}
-					} catch (JSONException e) {
-						Log.e("Login", "JSON response had no \"success\" value");
-						MainActivity.this.startActivity(loginIntent);
-					}
-				}
-
-				public void taskFailed() {
-					// TODO Auto-generated method stub
-					MainActivity.this.startActivity(loginIntent);
-				}
-			};
-			
-			// Send the request.
-			getRequestManager().verifyToken(handler, token);
-	
-		}
 	}
     
     // Getters and Setters

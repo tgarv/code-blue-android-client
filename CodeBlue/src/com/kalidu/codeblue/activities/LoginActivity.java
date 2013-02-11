@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
 							
 						}
 					};
-					MainActivity.getRequestManager().verifyCredentials(handler, username, password);
+					MainActivity.getRequestManager().login(handler, username, password);
 					
 					
 				}
@@ -74,17 +74,13 @@ public class LoginActivity extends Activity {
     
     private void handleResponse(JSONObject j){
     	try {
-    		JSONObject status = j.getJSONObject("status");
-    		Log.i("Login", status.toString());
-			if(status.getBoolean("success")){	// Successfully verified
+			if(j.getBoolean("success")){	// Successfully verified
 				// Store the username and token string in the shared preferences
-				JSONObject data = status.getJSONObject("data");
-				String token = data.getString("token");
+				JSONObject data = j.getJSONObject("data");
 				String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
 				Editor editor = MainActivity.getPreferences().edit();
 				
 				editor.putString("username", username);
-				editor.putString("token", token);
 				editor.commit();
 			
 				// Redirect to home page
@@ -94,13 +90,13 @@ public class LoginActivity extends Activity {
 			else {
 				// Login failed, show errors and try again
 				// TODO
-				Log.i("Login", "Failed: " + j.toString());
+				Log.i("Login", "Failed(1): " + j.toString());
 			}
 		} catch (JSONException e) {
 			// Login failed, show errors and try again
 			// TODO
 			e.printStackTrace();
-			Log.i("Login", "Failed: " + j.toString());
+			Log.i("Login", "Failed(2): " + j.toString());
 		}
     }
 }
