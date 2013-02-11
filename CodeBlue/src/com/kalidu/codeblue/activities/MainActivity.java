@@ -78,8 +78,6 @@ public class MainActivity extends Activity {
         HttpTaskHandler handler = new HttpTaskHandler(){
 			@Override
 			public void taskSuccessful(JSONObject json) {
-				Log.i("GCM", "Registered to server");
-				Log.i("GCM", json.toString());
 				// Redirect to question listing page
 				Intent intent = new Intent(MainActivity.this, ListQuestionActivity.class);
 				MainActivity.this.startActivity(intent);
@@ -94,7 +92,7 @@ public class MainActivity extends Activity {
         User u = MainActivity.getUser();
         if (u != null){
         	u.setGcmRegId(regId);
-        	getRequestManager().updateUser(handler,  u);
+        	getRequestManager().updateUserGCM(handler,  u);
         }
         else {
         	// TODO

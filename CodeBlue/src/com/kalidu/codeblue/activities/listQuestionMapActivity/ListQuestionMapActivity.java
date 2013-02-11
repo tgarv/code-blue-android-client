@@ -36,10 +36,9 @@ public class ListQuestionMapActivity extends MapActivity {
         mapView = (MapView)findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        final SharedPreferences preferences = MainActivity.getPreferences();
+        int latitude = MainActivity.getUser().getLatitude();
+        int longitude = MainActivity.getUser().getLongitude();
         
-        int latitude = preferences.getInt("latitude", 0);
-        int longitude = preferences.getInt("longitude", 0);
         Log.i("TEST", Integer.toString(latitude));
         Log.i("TEST", Integer.toString(longitude));
         GeoPoint center = new GeoPoint(latitude, longitude);

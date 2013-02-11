@@ -19,6 +19,7 @@ public class URLManager {
 	private String viewAnswer = "answer/%s";
 	private String createAnswer = "answer/create.json";
 	private String user = "user/%s";
+	private String userGCM = "user_register_gcm";
 	
 	public String getLoginURL(){
 		return base + login;
@@ -55,5 +56,9 @@ public class URLManager {
 	
 	public String getUserURL(int id){
 		return base + String.format(user, id);
+	}
+	
+	public String getUserGcmURL(){
+		return base + userGCM;
 	}
 }
