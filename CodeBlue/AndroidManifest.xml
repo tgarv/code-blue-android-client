@@ -27,49 +27,25 @@
             android:name="com.kalidu.codeblue.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:noHistory="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity"
             android:label="@string/title_activity_list_question" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.kalidu.codeblue.activities.CreateQuestionActivity"
-            android:label="@string/title_activity_create_question" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/title_activity_create_question"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.kalidu.codeblue.activities.ViewQuestionActivity"
             android:label="@string/title_activity_view_question" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="stateHidden"
         </activity>
         <activity
             android:name="com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity"
             android:label="@string/title_activity_map"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <receiver
