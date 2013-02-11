@@ -38,8 +38,8 @@ public class ListQuestionMapActivity extends MapActivity {
         
         final SharedPreferences preferences = MainActivity.getPreferences();
         
-        int latitude = (int) ((preferences.getFloat("latitude", 0))*1e6);
-        int longitude = (int) ((preferences.getFloat("longitude", 0))*1e6);
+        int latitude = preferences.getInt("latitude", 0);
+        int longitude = preferences.getInt("longitude", 0);
         Log.i("TEST", Integer.toString(latitude));
         Log.i("TEST", Integer.toString(longitude));
         GeoPoint center = new GeoPoint(latitude, longitude);
