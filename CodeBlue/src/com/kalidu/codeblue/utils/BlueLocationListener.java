@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class BlueLocationListener implements LocationListener{
@@ -24,6 +25,13 @@ public class BlueLocationListener implements LocationListener{
         editor.putInt("latitude", (int) (location.getLatitude() * 1e6));
         editor.putInt("longitude", (int) (location.getLongitude() * 1e6));
         editor.commit();
+        
+        // And update the user object stored in MainActivity
+        User user = MainActivity.getUser();
+        if(user != null){
+        	user.setLatitude((int)(location.getLatitude() * 1e6));
+        	user.setLongitude((int)(location.getLongitude() * 1e6));
+        }
         
         HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {

@@ -133,8 +133,6 @@ public class RequestManager {
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("latitude", Double.toString(location.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Double.toString(location.getLongitude())));
-		params.add(new BasicNameValuePair("elevation", Double.toString(location.getAltitude())));
-		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		
 		String url = MainActivity.getUrlManager().getSetLocationURL();
 

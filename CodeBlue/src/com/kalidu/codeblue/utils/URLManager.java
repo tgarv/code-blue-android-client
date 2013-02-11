@@ -12,7 +12,7 @@ public class URLManager {
 	private String base = "http://codeblue.herokuapp.com/api/";
 	private String androidBase = "http://10.0.2.2:5000/api/android/";
 	private String login = "user_authenticate";
-	private String setLocation = "user/set_location.json";
+	private String setLocation = "user_put_latlong";
 	private String listQuestions = "question";
 	private String createQuestion = "question/create.json";
 	private String viewQuestion = "question/%s";
@@ -26,7 +26,7 @@ public class URLManager {
 	}
 	
 	public String getSetLocationURL(){
-		return androidBase + setLocation;
+		return base + setLocation;
 	}
 	
 	public String getListQuestionsURL(){

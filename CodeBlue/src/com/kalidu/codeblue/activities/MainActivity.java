@@ -42,13 +42,12 @@ public class MainActivity extends Activity {
         MainActivity.setRequestManager(new RequestManager());
         Log.i("Prefs", preferences.getAll().toString());
         MainActivity.setNotificationsCount(0);
-        
-        // Set up the LocationManager to get location updates
-        initLocationManager();
 		
         // Either log in, or set up GCM
         if (MainActivity.getUser() == null){
         	checkLogin();
+        	// Set up the LocationManager to get location updates
+            initLocationManager();
         }
         else {
         	initGCM();
@@ -104,7 +103,8 @@ public class MainActivity extends Activity {
     private void initLocationManager(){
     	MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationListener = new BlueLocationListener();
-		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		MainActivity.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, locationListener);
+		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
     }
     
     private void checkLogin() {
