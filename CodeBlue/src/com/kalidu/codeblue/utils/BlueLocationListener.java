@@ -21,8 +21,8 @@ public class BlueLocationListener implements LocationListener{
 		// Update the location stored in the SharedPreferences
 		final SharedPreferences preferences = MainActivity.getPreferences();
         Editor editor = preferences.edit();
-        editor.putFloat("latitude", (float) location.getLatitude());
-        editor.putFloat("longitude", (float) location.getLongitude());
+        editor.putInt("latitude", (int) (location.getLatitude() * 1e6));
+        editor.putInt("longitude", (int) (location.getLongitude() * 1e6));
         editor.commit();
         
         HttpTaskHandler handler = new HttpTaskHandler(){

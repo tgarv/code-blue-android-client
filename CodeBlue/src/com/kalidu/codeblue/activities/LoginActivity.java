@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 /**
@@ -55,7 +56,7 @@ public class LoginActivity extends Activity {
 					HttpTaskHandler handler = new HttpTaskHandler(){
 						public void taskSuccessful(JSONObject json) {
 							Log.i("Login", json.toString());
-							handleResponse(json);
+							handleLoginResponse(json);
 						}
 
 						public void taskFailed() {
@@ -72,20 +73,26 @@ public class LoginActivity extends Activity {
         );
     }
     
-    private void handleResponse(JSONObject j){
+    private void handleLoginResponse(JSONObject j){
     	try {
 			if(j.getBoolean("success")){	// Successfully verified
-				// Store the username and token string in the shared preferences
+				// Get the user ID, and make an API request for the full user object.
 				JSONObject data = j.getJSONObject("data");
-				String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
-				Editor editor = MainActivity.getPreferences().edit();
-				
-				editor.putString("username", username);
-				editor.commit();
-			
-				// Redirect to home page
-				Intent intent = new Intent(LoginActivity.this, ListQuestionActivity.class);
-				LoginActivity.this.startActivity(intent);
+				int id = data.getInt("id");
+				HttpTaskHandler handler = new HttpTaskHandler(){
+					@Override
+					public void taskSuccessful(JSONObject json) {
+						handleUserResponse(json);
+					}
+
+					@Override
+					public void taskFailed() {
+						// TODO Auto-generated method stub
+						
+					}
+				};
+				MainActivity.getRequestManager().viewUser(handler, id);
+
 			}
 			else {
 				// Login failed, show errors and try again
@@ -98,5 +105,34 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 			Log.i("Login", "Failed(2): " + j.toString());
 		}
+    }
+    
+    private void handleUserResponse(JSONObject json){
+    	try{
+	    	int id = json.getInt("id");
+	    	String profileImageURL = json.getString("profile_img_url");
+	    	String username = json.getString("username");
+	    	String gcmRegId = json.getString("gcm_registration_id");
+	    	int latitude = (int)(json.optDouble("latitude", 0.0) * 1e6);
+	    	int longitude = (int)(json.optDouble("longitude", 0.0) * 1e6);
+	    	
+	    	User user = new User(id, username, profileImageURL, gcmRegId, latitude, longitude);
+	    	MainActivity.setUser(user);
+			Editor editor = MainActivity.getPreferences().edit();
+			
+			editor.putInt("userId", id);
+			editor.putString("profileImageURL", profileImageURL);
+			editor.putString("username", username);
+			editor.putInt("latitude", latitude);
+			editor.putInt("longitude", longitude);
+			editor.commit();
+		
+			// Redirect to home page
+			Intent intent = new Intent(LoginActivity.this, ListQuestionActivity.class);
+			LoginActivity.this.startActivity(intent);
+    	} catch (JSONException e) {
+    		// TODO
+    		e.printStackTrace();
+    	}
     }
 }

@@ -1,6 +1,5 @@
 package com.kalidu.codeblue.activities;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -16,7 +15,7 @@ import android.view.Menu;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.BlueLocationListener;
 import com.kalidu.codeblue.utils.RequestManager;
@@ -29,6 +28,7 @@ public class MainActivity extends Activity {
 	private static URLManager urlManager;
 	private static RequestManager requestManager;
 	private static int notificationsCount;
+	private static User user;
 	
 	static final String SENDER_ID = "164033855111";
 
@@ -127,5 +127,13 @@ public class MainActivity extends Activity {
 
 	public static void setNotificationsCount(int notificationsCount) {
 		MainActivity.notificationsCount = notificationsCount;
+	}
+
+	public static User getUser() {
+		return user;
+	}
+
+	public static void setUser(User user) {
+		MainActivity.user = user;
 	}
 }

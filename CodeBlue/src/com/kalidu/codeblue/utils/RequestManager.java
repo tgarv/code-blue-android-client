@@ -132,13 +132,22 @@ public class RequestManager {
 		task.execute(request);
 	}
 	
+	public void viewUser(HttpTaskHandler handler, int userId){
+		String url = MainActivity.getUrlManager().getUserURL(userId);
+		
+		AsyncHttpClient task = new AsyncHttpClient();
+		task.setTaskHandler(handler);
+		HttpUriRequest request = getGETRequest(url);
+		task.execute(request);
+	}
+	
 	public void updateUser(HttpTaskHandler handler, User user){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("latitude", Integer.toString(user.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Integer.toString(user.getLongitude())));
 		params.add(new BasicNameValuePair("gcm_reg_id", user.getGcmRegId()));
 		
-		String url = MainActivity.getUrlManager().getUserURL(user.getUsername());
+		String url = MainActivity.getUrlManager().getUserURL(user.getId());
 		
 		AsyncHttpClient task = new AsyncHttpClient();
 		task.setTaskHandler(handler);

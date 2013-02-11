@@ -48,7 +48,7 @@ public class URLManager {
 		return androidBase + createAnswer;
 	}
 	
-	public String getUserURL(String username){
-		return base + String.format(user, username);
+	public String getUserURL(int id){
+		return base + String.format(user, id);
 	}
 }
