@@ -83,8 +83,8 @@ public class MainActivity extends Activity {
 				Log.e("GCM", "Registration failed");
 			}
         };
-        
-        getRequestManager().registerGCM(handler, regId);
+        // TODO
+//        getRequestManager().updateUser(handler, regId);
     }
     
     private void initLocationManager(){

@@ -17,7 +17,7 @@ public class URLManager {
 	private String createQuestion = "question/create.json";
 	private String viewQuestion = "question/%s/view.json";
 	private String createAnswer = "answer/create.json";
-	private String registerGCM = "user/register_gcm.json";
+	private String user = "user/%s";
 	
 	public String getLoginURL(){
 		return base + login;
@@ -48,7 +48,7 @@ public class URLManager {
 		return androidBase + createAnswer;
 	}
 	
-	public String getRegisterGcmURL(){
-		return androidBase + registerGCM;
+	public String getUserURL(String username){
+		return base + String.format(user, username);
 	}
 }

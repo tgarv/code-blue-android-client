@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -17,6 +18,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class RequestManager {
@@ -41,6 +43,18 @@ public class RequestManager {
 			return null;
 		}
 		return post;
+	}
+	
+	private HttpUriRequest getPUTRequest(String url, List<NameValuePair> params){
+		HttpPut put = new HttpPut(url);
+		try {
+			put.setEntity(new UrlEncodedFormEntity(params));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return put;
 	}
 	
 	public void createQuestion(HttpTaskHandler handler, String title, String query, String form_delta) {
@@ -118,16 +132,17 @@ public class RequestManager {
 		task.execute(request);
 	}
 	
-	public void registerGCM(HttpTaskHandler handler, String regId){
+	public void updateUser(HttpTaskHandler handler, User user){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
-		params.add(new BasicNameValuePair("registration_id", regId));
+		params.add(new BasicNameValuePair("latitude", Integer.toString(user.getLatitude())));
+		params.add(new BasicNameValuePair("longitude", Integer.toString(user.getLongitude())));
+		params.add(new BasicNameValuePair("gcm_reg_id", user.getGcmRegId()));
 		
-		String url = MainActivity.getUrlManager().getRegisterGcmURL();
+		String url = MainActivity.getUrlManager().getUserURL(user.getUsername());
 		
 		AsyncHttpClient task = new AsyncHttpClient();
 		task.setTaskHandler(handler);
-		HttpUriRequest request = getPOSTRequest(url, params);
+		HttpUriRequest request = getPUTRequest(url, params);
 		task.execute(request);
 	}
 }
