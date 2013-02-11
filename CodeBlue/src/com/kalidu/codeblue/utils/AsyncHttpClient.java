@@ -11,11 +11,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kalidu.codeblue.activities.MainActivity;
-
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.util.Log;
+
+import com.kalidu.codeblue.activities.MainActivity;
 
 public class AsyncHttpClient extends AsyncTask<HttpUriRequest, Void, JSONObject>{
 	private DefaultHttpClient client = new DefaultHttpClient();
@@ -47,7 +46,6 @@ public class AsyncHttpClient extends AsyncTask<HttpUriRequest, Void, JSONObject>
 			String header = headers[0].getValue();
 			String[] parts = header.split("\"");
 			String session = parts[0] + "\"" + parts[1] + "\"";
-			Log.i("TEST", session);
 			Editor editor = MainActivity.getPreferences().edit();
 			editor.putString("session", session);
 			editor.commit();

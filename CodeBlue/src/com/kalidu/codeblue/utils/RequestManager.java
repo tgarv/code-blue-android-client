@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 
@@ -22,6 +23,21 @@ import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class RequestManager {
+	/**
+	 * Adds a Cookie containing the session information to the header of the request. The cookie value is 
+	 * retrieved from the SharedPreferences object where it was stored after login.
+	 * 
+	 * @param request The request to add the session cookie to
+	 * @return The same request, but with the added header information
+	 */
+	private HttpUriRequest addSessionCookie(HttpUriRequest request){
+		SharedPreferences prefs = MainActivity.getPreferences();
+		String session = prefs.getString("session", "");
+		
+		request.addHeader("Cookie", session);
+		return request;
+	}
+	
 	private HttpUriRequest getGETRequest(String url){
 		HttpGet request = new HttpGet();
 		try {
@@ -30,7 +46,7 @@ public class RequestManager {
 			Log.e("Http", "URISyntaxException");
 			return null;
 		}
-		return request;
+		return addSessionCookie(request);
 	}
 	
 	private HttpUriRequest getPOSTRequest(String url, List<NameValuePair> params){
@@ -42,7 +58,7 @@ public class RequestManager {
 			e.printStackTrace();
 			return null;
 		}
-		return post;
+		return addSessionCookie(post);
 	}
 	
 	private HttpUriRequest getPUTRequest(String url, List<NameValuePair> params){
@@ -54,7 +70,7 @@ public class RequestManager {
 			e.printStackTrace();
 			return null;
 		}
-		return put;
+		return addSessionCookie(put);
 	}
 	
 	public void createQuestion(HttpTaskHandler handler, String title, String query, String form_delta) {
@@ -152,6 +168,9 @@ public class RequestManager {
 	
 	public void updateUser(HttpTaskHandler handler, User user){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		params.add(new BasicNameValuePair("username", user.getUsername()));
+		params.add(new BasicNameValuePair("id", Integer.toString(user.getId())));
+		params.add(new BasicNameValuePair("profile_img_url", user.getProfileImageURL()));
 		params.add(new BasicNameValuePair("latitude", Integer.toString(user.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Integer.toString(user.getLongitude())));
 		params.add(new BasicNameValuePair("gcm_registration_id", user.getGcmRegId()));
