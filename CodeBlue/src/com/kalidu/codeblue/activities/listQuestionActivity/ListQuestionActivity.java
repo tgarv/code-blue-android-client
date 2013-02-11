@@ -1,6 +1,7 @@
 package com.kalidu.codeblue.activities.listQuestionActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import com.kalidu.codeblue.activities.ViewQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.models.Question;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
+import com.kalidu.codeblue.utils.JSONExtractor;
 import com.kalidu.codeblue.utils.NavBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
@@ -123,22 +125,12 @@ public class ListQuestionActivity extends ListActivity {
     }
     
     private void handleResponse(JSONObject j){
-    	Log.i("Questions", j.toString());
-    	try {
-			JSONArray questions = j.getJSONArray("questions");
-			for(int i=0; i < questions.length(); i++){
-				JSONObject question = questions.getJSONObject(i);
-				JSONObject user = question.getJSONObject("user");
-				String username = user.getString("username");
-				String title = question.getString("title");
-				String text = question.getString("text");
-				int id = question.getInt("id");
-				String datetime = question.getString("datetime");
-				ListQuestionActivity.this.questions.add(new Question(0, 0, "Test", "Test", 0.0, 0.0));
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	JSONExtractor extractor = new JSONExtractor();
+    	List<Question> questions = extractor.extractQuestion(j);
+    	Log.i("TEST", "here");
+    	Log.i("TEST", questions.toString());
+    	for (Question question: questions){
+    		ListQuestionActivity.this.questions.add(question);
+    	}
     }
 }

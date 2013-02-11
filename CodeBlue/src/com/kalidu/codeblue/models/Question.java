@@ -13,15 +13,15 @@ public class Question {
 	private String text;
 	private List<Answer> answers;
 	private int id;
-	private int userId;
+	private String username;
 	private double latitude;
 	private double longitude;
 	private String title;
 //	private User author;
 
-	public Question(int questionId, int userId, String title, String text, double latitude, 
+	public Question(int questionId, String username, String title, String text, double latitude, 
 			double longitude) {
-		this.setUserId(userId);
+		this.setUsername(username);
 		this.setId(questionId);
 		this.setTitle(title);
 		this.setText(text);
@@ -57,14 +57,6 @@ public class Question {
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
 	public double getLatitude() {
 		return latitude;
 	}
@@ -87,5 +79,13 @@ public class Question {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
