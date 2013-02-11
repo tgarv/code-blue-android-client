@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.kalidu.codeblue.R;
-import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
@@ -32,6 +32,13 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setListeners();
+        
+        SharedPreferences prefs = MainActivity.getPreferences();
+        String username = prefs.getString("username", "");
+        ((EditText) findViewById(R.id.login_username)).setText(username);
+        if(username != ""){
+        	((EditText) findViewById(R.id.login_password)).requestFocus();
+        }
     }
 
     @Override
@@ -79,20 +86,25 @@ public class LoginActivity extends Activity {
 				// Get the user ID, and make an API request for the full user object.
 				JSONObject data = j.getJSONObject("data");
 				int id = data.getInt("id");
-				HttpTaskHandler handler = new HttpTaskHandler(){
-					@Override
-					public void taskSuccessful(JSONObject json) {
-						handleUserResponse(json);
-					}
-
-					@Override
-					public void taskFailed() {
-						// TODO Auto-generated method stub
-						
-					}
-				};
-				MainActivity.getRequestManager().viewUser(handler, id);
-
+				String profileImageURL = data.getString("profile_img_url");
+		    	String username = data.getString("username");
+		    	String gcmRegId = data.getString("gcm_registration_id");
+		    	int latitude = (int)(data.optDouble("latitude", 0.0) * 1e6);
+		    	int longitude = (int)(data.optDouble("longitude", 0.0) * 1e6);
+		    	
+		    	User user = new User(id, username, profileImageURL, gcmRegId, latitude, longitude);
+		    	MainActivity.setUser(user);
+				Editor editor = MainActivity.getPreferences().edit();
+				
+				editor.putInt("userId", id);
+				editor.putString("username", username);
+				editor.putInt("latitude", latitude);
+				editor.putInt("longitude", longitude);
+				editor.commit();
+			
+				// Redirect to home page
+				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+				LoginActivity.this.startActivity(intent);
 			}
 			else {
 				// Login failed, show errors and try again
@@ -105,34 +117,5 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 			Log.i("Login", "Failed(2): " + j.toString());
 		}
-    }
-    
-    private void handleUserResponse(JSONObject json){
-    	try{
-	    	int id = json.getInt("id");
-	    	String profileImageURL = json.getString("profile_img_url");
-	    	String username = json.getString("username");
-	    	String gcmRegId = json.getString("gcm_registration_id");
-	    	int latitude = (int)(json.optDouble("latitude", 0.0) * 1e6);
-	    	int longitude = (int)(json.optDouble("longitude", 0.0) * 1e6);
-	    	
-	    	User user = new User(id, username, profileImageURL, gcmRegId, latitude, longitude);
-	    	MainActivity.setUser(user);
-			Editor editor = MainActivity.getPreferences().edit();
-			
-			editor.putInt("userId", id);
-			editor.putString("profileImageURL", profileImageURL);
-			editor.putString("username", username);
-			editor.putInt("latitude", latitude);
-			editor.putInt("longitude", longitude);
-			editor.commit();
-		
-			// Redirect to home page
-			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-			LoginActivity.this.startActivity(intent);
-    	} catch (JSONException e) {
-    		// TODO
-    		e.printStackTrace();
-    	}
     }
 }
