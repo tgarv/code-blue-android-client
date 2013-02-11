@@ -15,7 +15,8 @@ public class URLManager {
 	private String setLocation = "user/set_location.json";
 	private String listQuestions = "question";
 	private String createQuestion = "question/create.json";
-	private String viewQuestion = "question/%s/view.json";
+	private String viewQuestion = "question/%s";
+	private String viewAnswer = "answer/%s";
 	private String createAnswer = "answer/create.json";
 	private String user = "user/%s";
 	
@@ -41,7 +42,11 @@ public class URLManager {
 	 * @return the URL to view that question.
 	 */
 	public String getViewQuestionURL(String id){
-		return androidBase + String.format(viewQuestion, id);
+		return base + String.format(viewQuestion, id);
+	}
+	
+	public String getViewAnswerURL(String id){
+		return base + String.format(viewAnswer, id);
 	}
 	
 	public String getCreateAnswerURL(){

@@ -22,8 +22,8 @@ public class ViewQuestionItemizedOverlay extends ItemizedOverlay{
         SharedPreferences preferences = MainActivity.getPreferences();
         
         // Get user location and add it as a pin
-        int latitude = (int) ((preferences.getFloat("latitude", 0))*1e6);
-        int longitude = (int) ((preferences.getFloat("longitude", 0))*1e6);
+        int latitude = preferences.getInt("latitude", 0);
+        int longitude = preferences.getInt("longitude", 0);
         this.addItem(new GeoPoint(latitude, longitude));
         this.addItem(questionLocation);
 		populate();

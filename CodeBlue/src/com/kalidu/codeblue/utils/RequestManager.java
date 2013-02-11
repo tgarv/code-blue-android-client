@@ -85,6 +85,15 @@ public class RequestManager {
 		task.execute(request);
 	}
 	
+	public void viewAnswer(HttpTaskHandler handler, int answerId){
+		String url = MainActivity.getUrlManager().getViewAnswerURL(Integer.toString(answerId));
+  		
+		AsyncHttpClient task = new AsyncHttpClient();
+		task.setTaskHandler(handler);
+		HttpUriRequest request = getGETRequest(url);
+		task.execute(request);
+	}
+	
 	public void createAnswer(HttpTaskHandler handler, String text, int questionId){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("text", text));

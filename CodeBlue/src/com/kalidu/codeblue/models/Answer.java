@@ -15,13 +15,11 @@ public class Answer {
 	private int id;
 	private String text;
 	private int userId;
-	private int questionId;
 
-	public Answer(int answerId, int userId, String text, int questionId) {
+	public Answer(int answerId, int userId, String text) {
 		this.setId(answerId);
 		this.setUserId(userId);
 		this.setText(text);
-		this.setQuestionId(questionId);
 	}
 
 	
@@ -62,16 +60,6 @@ public class Answer {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}
-
-
-	public int getQuestionId() {
-		return questionId;
-	}
-
-
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
 	}
 
 }

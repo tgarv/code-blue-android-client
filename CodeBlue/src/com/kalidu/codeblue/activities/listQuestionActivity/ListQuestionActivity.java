@@ -127,8 +127,6 @@ public class ListQuestionActivity extends ListActivity {
     private void handleResponse(JSONObject j){
     	JSONExtractor extractor = new JSONExtractor();
     	List<Question> questions = extractor.extractQuestion(j);
-    	Log.i("TEST", "here");
-    	Log.i("TEST", questions.toString());
     	for (Question question: questions){
     		ListQuestionActivity.this.questions.add(question);
     	}

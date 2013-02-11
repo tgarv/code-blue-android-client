@@ -98,6 +98,7 @@ public class ViewQuestionActivity extends MapActivity {
 	private void extractQuestionFromBundle(){
         Bundle b = this.getIntent().getExtras();
         final int questionId = b.getInt("questionId");
+        Log.i("TEST", Integer.toString(questionId));
         
         HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {
@@ -111,7 +112,7 @@ public class ViewQuestionActivity extends MapActivity {
 
 			public void taskFailed() {
 				// TODO Auto-generated method stub
-				
+				Log.i("TEST", "failed");
 			}
         	
         };
@@ -127,6 +128,8 @@ public class ViewQuestionActivity extends MapActivity {
     public void setQuestionView(JSONObject question){
     	TextView title = ((TextView) findViewById(R.id.view_question_title));
     	TextView text = ((TextView) findViewById(R.id.view_question_text));
+    	LinearLayout root = ViewQuestionActivity.getAnswerRoot();
+		root.removeAllViews();	// Remove anything that was there before
     	
     	try {
 			title.setText(question.getString("title"));
@@ -138,30 +141,50 @@ public class ViewQuestionActivity extends MapActivity {
     	
     	try {
 			JSONArray answers = question.getJSONArray("answers");
-			LinearLayout root = ViewQuestionActivity.getAnswerRoot();
-			root.removeAllViews();	// Remove anything that was there before
 			
 			for(int i=0; i<answers.length(); i++){
 				// For each JSON representation of an answer, create a Java Answer object and then use that to
 				// construct its view.
 				JSONObject answerJSON = (JSONObject) answers.get(i);
-				String answerText = answerJSON.getString("text");
-				int score = answerJSON.getInt("score");
-				int answerId = answerJSON.getInt("answer_id");
-				int userId = 0;	// TODO add this to the API call
+				int answerId = answerJSON.getInt("id");
+				addAnswer(root, answerId);
 				
-				// Construct an Answer object using the parameters extracted from the JSON object.
-				Answer answer = new Answer(userId, answerId, answerText, score);
-				// Get the view for this answer object
-				LinearLayout answerView = answer.getView(getBaseContext());
-				// And attach it to the view for the answers
-				root.addView(answerView);
 			}
 		} catch (JSONException e) {
 			// TODO
 			// There are no answers, or the JSON object is badly formed.
 			e.printStackTrace();
 		}
+    }
+    
+    private void addAnswer(final LinearLayout root, int id){
+    	HttpTaskHandler handler = new HttpTaskHandler(){
+			@Override
+			public void taskSuccessful(JSONObject json) {
+				try{
+					// Construct an Answer object using the parameters extracted from the JSON object.
+					int answerId = json.getInt("id");
+					JSONObject user = json.getJSONObject("author");
+					int userId = user.getInt("id");
+					String text = json.getString("text");
+					Answer answer = new Answer(answerId, userId, text);
+					// Get the view for this answer object
+					LinearLayout answerView = answer.getView(getBaseContext());
+					// And attach it to the view for the answers
+					root.addView(answerView);
+				} catch (JSONException e){
+					// TODO
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void taskFailed() {
+				// TODO Auto-generated method stub
+				
+			}
+    	};
+    	MainActivity.getRequestManager().viewAnswer(handler, id);
+    	
     }
 	
 	public void setListeners(){
