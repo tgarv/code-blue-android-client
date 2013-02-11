@@ -145,7 +145,7 @@ public class RequestManager {
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("latitude", Integer.toString(user.getLatitude())));
 		params.add(new BasicNameValuePair("longitude", Integer.toString(user.getLongitude())));
-		params.add(new BasicNameValuePair("gcm_reg_id", user.getGcmRegId()));
+		params.add(new BasicNameValuePair("gcm_registration_id", user.getGcmRegId()));
 		
 		String url = MainActivity.getUrlManager().getUserURL(user.getId());
 		

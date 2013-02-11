@@ -128,7 +128,7 @@ public class LoginActivity extends Activity {
 			editor.commit();
 		
 			// Redirect to home page
-			Intent intent = new Intent(LoginActivity.this, ListQuestionActivity.class);
+			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 			LoginActivity.this.startActivity(intent);
     	} catch (JSONException e) {
     		// TODO

@@ -15,6 +15,7 @@ import android.view.Menu;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.kalidu.codeblue.R;
+import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.BlueLocationListener;
@@ -42,15 +43,16 @@ public class MainActivity extends Activity {
         Log.i("Prefs", preferences.getAll().toString());
         MainActivity.setNotificationsCount(0);
         
-        initGCM();
-        
         // Set up the LocationManager to get location updates
         initLocationManager();
 		
-		// Redirect to the login page if the sharedPreferences doesn't have a token string or if that string 
-		// isn't valid
-		
-		checkLogin();
+        // Either log in, or set up GCM
+        if (MainActivity.getUser() == null){
+        	checkLogin();
+        }
+        else {
+        	initGCM();
+        }
     }
 
 	@Override
@@ -60,7 +62,8 @@ public class MainActivity extends Activity {
     }
     
     private void initGCM(){
-    	// Set up GCM Stuff
+    	// Set up GCM Stuff, including registering the device with Google and sending the registration
+    	// id to our server.
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
         String regId = GCMRegistrar.getRegistrationId(this);
@@ -76,6 +79,10 @@ public class MainActivity extends Activity {
 			@Override
 			public void taskSuccessful(JSONObject json) {
 				Log.i("GCM", "Registered to server");
+				Log.i("GCM", json.toString());
+				// Redirect to question listing page
+				Intent intent = new Intent(MainActivity.this, ListQuestionActivity.class);
+				MainActivity.this.startActivity(intent);
 			}
 			@Override
 			public void taskFailed() {
@@ -83,7 +90,16 @@ public class MainActivity extends Activity {
 				Log.e("GCM", "Registration failed");
 			}
         };
-        // TODO
+
+        User u = MainActivity.getUser();
+        if (u != null){
+        	u.setGcmRegId(regId);
+        	getRequestManager().updateUser(handler,  u);
+        }
+        else {
+        	// TODO
+        	Log.e("GCM", "here");
+        }
 //        getRequestManager().updateUser(handler, regId);
     }
     
@@ -96,7 +112,6 @@ public class MainActivity extends Activity {
     private void checkLogin() {
     	final Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
 		this.startActivity(loginIntent);
-		
 	}
     
     // Getters and Setters
