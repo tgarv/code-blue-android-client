@@ -48,14 +48,11 @@ public class CreateQuestionItemizedOverlay extends ItemizedOverlay{
 	}
 	
 	@Override
-	public boolean onTouchEvent(MotionEvent event, MapView mapView){
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			GeoPoint p = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-			if (this.items.size() > 1){	// Already a temporary marker, so remove it
-				this.items.remove(1);
-			}
-			CreateQuestionItemizedOverlay.this.addItem(p);
+	public boolean onTap(GeoPoint p, MapView mapView){
+		if (this.items.size() > 1){	// Already a temporary marker, so remove it
+			this.items.remove(1);
 		}
+		CreateQuestionItemizedOverlay.this.addItem(p);
 		return false;
 		
 	}
