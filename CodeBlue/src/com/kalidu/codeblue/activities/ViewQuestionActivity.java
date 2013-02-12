@@ -97,6 +97,7 @@ public class ViewQuestionActivity extends MapActivity {
 	 */
 	private void extractQuestionFromBundle(){
         Bundle b = this.getIntent().getExtras();
+        Log.i("TEST", Boolean.toString(b.containsKey("questionId")));
         final int questionId = b.getInt("questionId");
         Log.i("TEST", Integer.toString(questionId));
         

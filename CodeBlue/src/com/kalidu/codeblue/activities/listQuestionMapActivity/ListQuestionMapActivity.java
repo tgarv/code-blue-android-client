@@ -124,7 +124,7 @@ public class ListQuestionMapActivity extends MapActivity {
 			public void taskSuccessful(JSONObject json) {
 				// TODO Auto-generated method stub
 				try {
-					JSONArray questions = json.getJSONArray("questions");
+					JSONArray questions = json.getJSONArray("objects");
 					for (int i=0; i<questions.length(); i++){
 						JSONObject question = questions.getJSONObject(i);
 						int latitude = (int) ((question.getDouble("latitude") * 1e6));

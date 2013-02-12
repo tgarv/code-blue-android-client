@@ -43,13 +43,12 @@ public class ListQuestionItemizedOverlay extends ItemizedOverlay {
 	  AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 	  builder.setTitle(item.getTitle());
 	  
-	  //TODO this is a hack to treat the user different than the questions, fix the hack
-	  if (item.getTitle() != "That's you!"){
+	  if (item.getType() == "question"){
 		  builder.setMessage(item.getSnippet());
 		  builder.setNeutralButton("View Answers", new DialogInterface.OnClickListener() {
 	          public void onClick(DialogInterface dialog, int id) {
 	        	//get selected items
-	          	String questionId = Integer.toString(item.getId());
+	          	int questionId = item.getId();
 	      		
 	      		Intent intent = new Intent(mContext, ViewQuestionActivity.class);
 	      		intent.putExtra("questionId", questionId);
