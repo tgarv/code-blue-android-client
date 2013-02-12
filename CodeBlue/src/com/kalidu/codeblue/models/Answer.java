@@ -15,11 +15,15 @@ public class Answer {
 	private int id;
 	private String text;
 	private int userId;
+	private int latitude;
+	private int longitude;
 
-	public Answer(int answerId, int userId, String text) {
+	public Answer(int answerId, int userId, String text, int latitude, int longitude) {
 		this.setId(answerId);
 		this.setUserId(userId);
 		this.setText(text);
+		this.setLatitude(latitude);
+		this.setLongitude(longitude);
 	}
 
 	
@@ -60,6 +64,26 @@ public class Answer {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+
+	public int getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(int latitude) {
+		this.latitude = latitude;
+	}
+
+
+	public int getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(int longitude) {
+		this.longitude = longitude;
 	}
 
 }

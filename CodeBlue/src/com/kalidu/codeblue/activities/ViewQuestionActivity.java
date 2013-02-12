@@ -158,6 +158,11 @@ public class ViewQuestionActivity extends MapActivity {
 		}
     }
     
+    /**
+     * Make an HTTP request to get the answer with the given id, and append it to root.
+     * @param root the LinearLayout to append the answer view to
+     * @param id the ID of the answer to get from the server
+     */
     private void addAnswer(final LinearLayout root, int id){
     	HttpTaskHandler handler = new HttpTaskHandler(){
 			@Override
@@ -168,11 +173,16 @@ public class ViewQuestionActivity extends MapActivity {
 					JSONObject user = json.getJSONObject("author");
 					int userId = user.getInt("id");
 					String text = json.getString("text");
-					Answer answer = new Answer(answerId, userId, text);
+					int latitude = (int)(json.getDouble("latitude") * 1e6);
+					int longitude = (int)(json.getDouble("longitude") * 1e6);
+					Log.i("Answer", Integer.toString(latitude));
+					Log.i("Answer", Integer.toString(longitude));
+					Answer answer = new Answer(answerId, userId, text, latitude, longitude);
 					// Get the view for this answer object
 					LinearLayout answerView = answer.getView(getBaseContext());
 					// And attach it to the view for the answers
 					root.addView(answerView);
+					addPointToMap(latitude, longitude);
 				} catch (JSONException e){
 					// TODO
 					e.printStackTrace();
@@ -222,16 +232,17 @@ public class ViewQuestionActivity extends MapActivity {
 					// Make the request to create an answer.
 					MainActivity.getRequestManager().createAnswer(handler, text, latitude, longitude, questionId);
 					
-					MapView mv = (MapView) findViewById(R.id.mapview);
-					mv.setVisibility(View.VISIBLE);
-					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
-					actionBar.setVisibility(View.VISIBLE);
-					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
-					navBar.setVisibility(View.VISIBLE);
-					
-					InputMethodManager imm = (InputMethodManager)getSystemService(
-							Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(mv.getWindowToken(), 0);
+//					// Make the map, navbar and action bar visible again
+//					MapView mv = (MapView) findViewById(R.id.mapview);
+//					mv.setVisibility(View.VISIBLE);
+//					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
+//					actionBar.setVisibility(View.VISIBLE);
+//					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
+//					navBar.setVisibility(View.VISIBLE);
+//					// Hide the keyboard
+//					InputMethodManager imm = (InputMethodManager)getSystemService(
+//							Context.INPUT_METHOD_SERVICE);
+//					imm.hideSoftInputFromWindow(mv.getWindowToken(), 0);
 				}
         		
         	}
@@ -277,6 +288,12 @@ public class ViewQuestionActivity extends MapActivity {
 		MapController mc = mapView.getController();
 		mc.setZoom(16);
 		mc.setCenter(questionLocation);
+	}
+	
+	public void addPointToMap(int latitude, int longitude){
+		MapView mapView = (MapView) findViewById(R.id.mapview);
+		ViewQuestionItemizedOverlay overlay = (ViewQuestionItemizedOverlay) mapView.getOverlays().get(0);
+		overlay.addItem(new GeoPoint(latitude, longitude));
 	}
 	
 	public static LinearLayout getAnswerRoot() {
