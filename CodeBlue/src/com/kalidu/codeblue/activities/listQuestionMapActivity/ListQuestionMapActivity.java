@@ -138,7 +138,7 @@ public class ListQuestionMapActivity extends MapActivity {
 						Drawable marker = getResources().getDrawable(R.drawable.marker);
 						addPoint(latitude, longitude, title, text, "question", marker, id);
 					}
-					fitAllMarkers(points);
+//					fitAllMarkers(points);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

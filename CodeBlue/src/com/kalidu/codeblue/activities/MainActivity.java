@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
     	MainActivity.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationListener = new BlueLocationListener();
 		MainActivity.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, locationListener);
-		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
+		MainActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
     }
     
     private void checkLogin() {

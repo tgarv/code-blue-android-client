@@ -3,6 +3,7 @@ package com.kalidu.codeblue;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -29,6 +30,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String data = b.getString("data");
 		if (data.equals("New message")){
 			Log.i("GCM", "New message!");
+			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			v.vibrate(500);
 			// Handle a new message alert
 			MainActivity.setNotificationsCount(MainActivity.getNotificationsCount()+1);
 			Intent i = new Intent();
