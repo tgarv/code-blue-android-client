@@ -60,14 +60,17 @@ public class RequestManager {
 		return addSessionCookie(post);
 	}
 	
-	public void createQuestion(HttpTaskHandler handler, String title, String query, String form_delta) {
+	public void createQuestion(HttpTaskHandler handler, String title, String text, double latitude, 
+			double longitude) {
+		
 		String url = MainActivity.getUrlManager().getCreateQuestionURL();
+		Log.i("Create question", url);
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
-		params.add(new BasicNameValuePair("form_delta", form_delta));
 		params.add(new BasicNameValuePair("title", title));
-		params.add(new BasicNameValuePair("query", query));
-		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
+		params.add(new BasicNameValuePair("text", text));
+		params.add(new BasicNameValuePair("latitude", Double.toString(latitude)));
+		params.add(new BasicNameValuePair("longitude", Double.toString(longitude)));
 		
 		AsyncHttpClient task = new AsyncHttpClient();
 		task.setTaskHandler(handler);

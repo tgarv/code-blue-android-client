@@ -1,5 +1,6 @@
 package com.kalidu.codeblue.activities.listQuestionMapActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -7,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +27,14 @@ import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 
 public class ListQuestionMapActivity extends MapActivity {
 	private MapView mapView;
+	private List<GeoPoint> points;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         
+        points = new ArrayList<GeoPoint>(0);
         mapView = (MapView)findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
@@ -105,6 +107,7 @@ public class ListQuestionMapActivity extends MapActivity {
 	public boolean addPoint(int latitude, int longitude, String title, String text, String type, 
 			Drawable marker, int id){
 		GeoPoint point = new GeoPoint(latitude, longitude);
+		points.add(point);
         ListQuestionOverlayItem overlay = new ListQuestionOverlayItem(point, title, text, type, id);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
@@ -135,6 +138,7 @@ public class ListQuestionMapActivity extends MapActivity {
 						Drawable marker = getResources().getDrawable(R.drawable.marker);
 						addPoint(latitude, longitude, title, text, "question", marker, id);
 					}
+					fitAllMarkers(points);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -153,5 +157,34 @@ public class ListQuestionMapActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	/**
+	 * From http://stackoverflow.com/questions/5114710/android-setting-zoom-level-in-google-maps-to-include-all-marker-points.
+	 * Used to zoom the map out and center it to where it shows all pins on the map.
+	 * @param points The list of points to fit on the map
+	 */
+	public void fitAllMarkers(List<GeoPoint> points){
+		if(points.size() < 2){	// It doesn't work correctly if there are less than 2 points
+			return;
+		}
+		int minLatitude = Integer.MAX_VALUE;
+		int maxLatitude = Integer.MIN_VALUE;
+		int minLongitude = Integer.MAX_VALUE;
+		int maxLongitude = Integer.MIN_VALUE;
+		for(GeoPoint point : points){
+			int lat = point.getLatitudeE6();
+			int lon = point.getLongitudeE6();
+
+			maxLatitude = Math.max(lat, maxLatitude);
+			minLatitude = Math.min(lat, minLatitude);
+			maxLongitude = Math.max(lon, maxLongitude);
+			minLongitude = Math.min(lon, minLongitude);
+		}
+		MapController controller = mapView.getController();
+		controller.zoomToSpan(Math.abs(maxLatitude - minLatitude), Math.abs(maxLongitude - minLongitude));
+		controller.animateTo(new GeoPoint( 
+				(maxLatitude + minLatitude)/2, 
+				(maxLongitude + minLongitude)/2 ));
 	}
 }

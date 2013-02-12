@@ -13,6 +13,7 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.kalidu.codeblue.activities.MainActivity;
+import com.kalidu.codeblue.models.User;
 
 @SuppressWarnings("rawtypes")
 public class CreateQuestionItemizedOverlay extends ItemizedOverlay{
@@ -21,8 +22,9 @@ public class CreateQuestionItemizedOverlay extends ItemizedOverlay{
 	public CreateQuestionItemizedOverlay(Drawable defaultMarker) {
 		super(defaultMarker);
         SharedPreferences preferences = MainActivity.getPreferences();
-        int latitude = (int) ((preferences.getFloat("latitude", 0))*1e6);
-        int longitude = (int) ((preferences.getFloat("longitude", 0))*1e6);
+        User user = MainActivity.getUser();
+        int latitude = user.getLatitude();
+        int longitude = user.getLongitude();
         this.addItem(new GeoPoint(latitude, longitude));
 		populate();
 	}

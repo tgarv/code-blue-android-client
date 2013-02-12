@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.kalidu.codeblue.models.Question;
 
 /**
@@ -24,7 +22,6 @@ public class JSONExtractor {
 			JSONArray jsonQuestions = j.getJSONArray("objects");
 			for(int i=0; i < jsonQuestions.length(); i++){
 				JSONObject jsonQuestion = jsonQuestions.getJSONObject(i);
-				Log.i("Extractor", jsonQuestion.toString());
 				JSONObject user = jsonQuestion.getJSONObject("author");
 				JSONArray answers = jsonQuestion.getJSONArray("answers");
 				int questionId = jsonQuestion.getInt("id");

@@ -14,7 +14,7 @@ public class URLManager {
 	private String login = "user_authenticate";
 	private String setLocation = "user_put_latlong";
 	private String listQuestions = "question";
-	private String createQuestion = "question/create.json";
+	private String createQuestion = "question_create";
 	private String viewQuestion = "question/%s";
 	private String viewAnswer = "answer/%s";
 	private String createAnswer = "answer/create.json";
@@ -34,7 +34,7 @@ public class URLManager {
 	}
 	
 	public String getCreateQuestionURL(){
-		return androidBase + createQuestion;
+		return base + createQuestion;
 	}
 	
 	/**

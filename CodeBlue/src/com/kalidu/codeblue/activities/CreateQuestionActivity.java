@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.kalidu.codeblue.CreateQuestionItemizedOverlay;
 import com.kalidu.codeblue.R;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.NavBarBuilder;
@@ -92,11 +94,10 @@ public class CreateQuestionActivity extends MapActivity {
      * @param text	The text/query/body of the question.
      */
     private void createQuestion(String title, String text){
-    	String form_delta = "6";	// TODO make this changeable.
-    	
     	// The handler to handle the API response after it returns
 		HttpTaskHandler handler = new HttpTaskHandler(){
 			public void taskSuccessful(JSONObject json) {
+				Log.i("Create Question", json.toString());
 				// Question created, redirect to question list and clear the inputs
 				((TextView) findViewById(R.id.new_question_title)).setText("");
 				((TextView) findViewById(R.id.new_question_text)).setText("");
@@ -117,9 +118,8 @@ public class CreateQuestionActivity extends MapActivity {
 		GeoPoint point = item.getPoint();
 		double latitude = point.getLatitudeE6()/(double)1e6;
 		double longitude = point.getLongitudeE6()/(double)1e6;
-		Log.i("TEST", "Need to create question at: " + Double.toString(latitude) + ", " + Double.toString(longitude));
 		// Make the request
-//    	MainActivity.getRequestManager().createQuestion(handler, title, text, form_delta);
+    	MainActivity.getRequestManager().createQuestion(handler, title, text, latitude, longitude);
     }
     
     /**
@@ -145,6 +145,11 @@ public class CreateQuestionActivity extends MapActivity {
         
         this.setMapView((MapView) findViewById(R.id.mapview));
         this.getMapView().getOverlays().add(new CreateQuestionItemizedOverlay(marker));
+        
+        User user = MainActivity.getUser();
+        MapController controller = this.getMapView().getController();
+        controller.setZoom(16);
+        controller.setCenter(new GeoPoint(user.getLatitude(), user.getLongitude()));
     }
 
 	@Override
