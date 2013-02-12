@@ -3,10 +3,8 @@ package com.kalidu.codeblue;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -21,7 +19,6 @@ public class CreateQuestionItemizedOverlay extends ItemizedOverlay{
 
 	public CreateQuestionItemizedOverlay(Drawable defaultMarker) {
 		super(defaultMarker);
-        SharedPreferences preferences = MainActivity.getPreferences();
         User user = MainActivity.getUser();
         int latitude = user.getLatitude();
         int longitude = user.getLongitude();

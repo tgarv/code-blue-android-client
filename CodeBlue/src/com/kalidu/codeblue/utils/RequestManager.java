@@ -102,9 +102,12 @@ public class RequestManager {
 	
 	public void createAnswer(HttpTaskHandler handler, String text, int latitude, int longitude, int questionId){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
+		String latitudeString = Double.toString(((double)latitude)/((double)1e6));
+		String longitudeString = Double.toString(((double)longitude)/((double)1e6));
+		Log.i("Answer", "Creating new answer at (" + latitudeString + "," + longitudeString + ")");
 		params.add(new BasicNameValuePair("text", text));
-		params.add(new BasicNameValuePair("latitude", Integer.toString(latitude)));
-		params.add(new BasicNameValuePair("longitude", Integer.toString(longitude)));
+		params.add(new BasicNameValuePair("latitude", latitudeString));
+		params.add(new BasicNameValuePair("longitude", longitudeString));
 		params.add(new BasicNameValuePair("question_id", Integer.toString(questionId)));
 		
 		String url = MainActivity.getUrlManager().getCreateAnswerURL();

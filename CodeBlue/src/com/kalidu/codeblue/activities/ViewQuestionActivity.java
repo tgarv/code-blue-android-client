@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -29,6 +27,7 @@ import com.kalidu.codeblue.ViewQuestionItemizedOverlay;
 import com.kalidu.codeblue.activities.listQuestionActivity.ListQuestionActivity;
 import com.kalidu.codeblue.activities.listQuestionMapActivity.ListQuestionMapActivity;
 import com.kalidu.codeblue.models.Answer;
+import com.kalidu.codeblue.models.User;
 import com.kalidu.codeblue.utils.ActionBarBuilder;
 import com.kalidu.codeblue.utils.AsyncHttpClient.HttpTaskHandler;
 import com.kalidu.codeblue.utils.NavBarBuilder;
@@ -38,6 +37,8 @@ public class ViewQuestionActivity extends MapActivity {
     private static LinearLayout answerRoot;
 	private int questionId;
 	private JSONObject question;
+	private MapView mapView;
+	private ViewQuestionItemizedOverlay userOverlay, questionOverlay, answerOverlay;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class ViewQuestionActivity extends MapActivity {
         extractQuestionFromBundle();
         
         setListeners();
+        this.setMapView((MapView) findViewById(R.id.mapview));
     }
 
     @Override
@@ -175,14 +177,12 @@ public class ViewQuestionActivity extends MapActivity {
 					String text = json.getString("text");
 					int latitude = (int)(json.getDouble("latitude") * 1e6);
 					int longitude = (int)(json.getDouble("longitude") * 1e6);
-					Log.i("Answer", Integer.toString(latitude));
-					Log.i("Answer", Integer.toString(longitude));
 					Answer answer = new Answer(answerId, userId, text, latitude, longitude);
 					// Get the view for this answer object
 					LinearLayout answerView = answer.getView(getBaseContext());
 					// And attach it to the view for the answers
 					root.addView(answerView);
-					addPointToMap(latitude, longitude);
+					addAnswerToMap(latitude, longitude);
 				} catch (JSONException e){
 					// TODO
 					e.printStackTrace();
@@ -205,8 +205,9 @@ public class ViewQuestionActivity extends MapActivity {
 				public void onClick(View v) {
 					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
 					int questionId = getQuestionId();
-					int latitude = MainActivity.getUser().getLatitude();
-					int longitude = MainActivity.getUser().getLongitude();
+					GeoPoint newAnswerLocation = getNewAnswerLocation();
+					int latitude = newAnswerLocation.getLatitudeE6();
+					int longitude = newAnswerLocation.getLongitudeE6();
 					HttpTaskHandler handler = new HttpTaskHandler(){
 						public void taskSuccessful(JSONObject json) {
 							try {
@@ -253,7 +254,7 @@ public class ViewQuestionActivity extends MapActivity {
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
-					MapView mv = (MapView) findViewById(R.id.mapview);
+					MapView mv = getMapView();
 					mv.setVisibility(View.GONE);
 					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
 					actionBar.setVisibility(View.GONE);
@@ -265,7 +266,7 @@ public class ViewQuestionActivity extends MapActivity {
 	}
 	
 	public void mapInit(){
-		MapView mapView = (MapView) findViewById(R.id.mapview);
+		MapView mapView = getMapView();
 		
 		JSONObject question = getQuestion();
 		int latitude = 0;
@@ -278,22 +279,48 @@ public class ViewQuestionActivity extends MapActivity {
 			e.printStackTrace();
 		}
 		
+		// Initialize the question overlay
 		GeoPoint questionLocation = new GeoPoint(latitude, longitude);
-		Drawable marker = getResources().getDrawable(R.drawable.marker);
-		marker.setBounds(-marker.getIntrinsicWidth()/2, -marker.getIntrinsicHeight(), 
-        		marker.getIntrinsicWidth()/2, 0);
+		Drawable questionMarker = getResources().getDrawable(R.drawable.marker);
+		questionMarker.setBounds(-questionMarker.getIntrinsicWidth()/2, -questionMarker.getIntrinsicHeight(), 
+        		questionMarker.getIntrinsicWidth()/2, 0);
+		mapView.getOverlays().add(new ViewQuestionItemizedOverlay(questionMarker, questionLocation, false));
 		
-		mapView.getOverlays().add(new ViewQuestionItemizedOverlay(marker, questionLocation));
+		// Initialize the user overlay
+		User user = MainActivity.getUser();
+		int userLatitude = user.getLatitude();
+        int userLongitude = user.getLongitude();
+        GeoPoint userLocation = new GeoPoint(userLatitude, userLongitude);
+        Drawable userMarker = getResources().getDrawable(R.drawable.marker_green);
+        userMarker.setBounds(-userMarker.getIntrinsicWidth()/2, -userMarker.getIntrinsicHeight(), 
+        		userMarker.getIntrinsicWidth()/2, 0);
+        mapView.getOverlays().add(new ViewQuestionItemizedOverlay(userMarker, userLocation, false));
+        
+        // Initialize the answer overlay
+        Drawable answerMarker = getResources().getDrawable(R.drawable.marker_blue);
+        answerMarker.setBounds(-answerMarker.getIntrinsicWidth()/2, -answerMarker.getIntrinsicHeight(), 
+        		answerMarker.getIntrinsicWidth()/2, 0);
+        // It's ok to pass in the user location as the first location in this overlay, because that one determines
+        // where the answer will be created which defaults to the user location.
+        mapView.getOverlays().add(new ViewQuestionItemizedOverlay(answerMarker, userLocation, true));
+        
+		
 		mapView.setBuiltInZoomControls(true);
 		MapController mc = mapView.getController();
 		mc.setZoom(16);
 		mc.setCenter(questionLocation);
 	}
 	
-	public void addPointToMap(int latitude, int longitude){
-		MapView mapView = (MapView) findViewById(R.id.mapview);
-		ViewQuestionItemizedOverlay overlay = (ViewQuestionItemizedOverlay) mapView.getOverlays().get(0);
+	public void addAnswerToMap(int latitude, int longitude){
+		MapView mapView = getMapView();
+		ViewQuestionItemizedOverlay overlay = (ViewQuestionItemizedOverlay) mapView.getOverlays().get(2);
 		overlay.addItem(new GeoPoint(latitude, longitude));
+	}
+	
+	public GeoPoint getNewAnswerLocation(){
+		MapView mapView = getMapView();
+		ViewQuestionItemizedOverlay overlay = (ViewQuestionItemizedOverlay) mapView.getOverlays().get(2);
+		return overlay.getTempMarkerLocation();
 	}
 	
 	public static LinearLayout getAnswerRoot() {
@@ -324,5 +351,37 @@ public class ViewQuestionActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public MapView getMapView() {
+		return mapView;
+	}
+
+	public void setMapView(MapView mapView) {
+		this.mapView = mapView;
+	}
+
+	public ViewQuestionItemizedOverlay getUserOverlay() {
+		return userOverlay;
+	}
+
+	public void setUserOverlay(ViewQuestionItemizedOverlay userOverlay) {
+		this.userOverlay = userOverlay;
+	}
+
+	public ViewQuestionItemizedOverlay getQuestionOverlay() {
+		return questionOverlay;
+	}
+
+	public void setQuestionOverlay(ViewQuestionItemizedOverlay questionOverlay) {
+		this.questionOverlay = questionOverlay;
+	}
+
+	public ViewQuestionItemizedOverlay getAnswerOverlay() {
+		return answerOverlay;
+	}
+
+	public void setAnswerOverlay(ViewQuestionItemizedOverlay answerOverlay) {
+		this.answerOverlay = answerOverlay;
 	}
 }
