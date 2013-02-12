@@ -100,11 +100,12 @@ public class RequestManager {
 		task.execute(request);
 	}
 	
-	public void createAnswer(HttpTaskHandler handler, String text, int questionId){
+	public void createAnswer(HttpTaskHandler handler, String text, int latitude, int longitude, int questionId){
 		List<NameValuePair> params = new ArrayList<NameValuePair>(0);
 		params.add(new BasicNameValuePair("text", text));
+		params.add(new BasicNameValuePair("latitude", Integer.toString(latitude)));
+		params.add(new BasicNameValuePair("longitude", Integer.toString(longitude)));
 		params.add(new BasicNameValuePair("question_id", Integer.toString(questionId)));
-		params.add(new BasicNameValuePair("token", MainActivity.getPreferences().getString("token", "")));
 		
 		String url = MainActivity.getUrlManager().getCreateAnswerURL();
 

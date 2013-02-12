@@ -195,14 +195,15 @@ public class ViewQuestionActivity extends MapActivity {
 				public void onClick(View v) {
 					String text = ((EditText) findViewById(R.id.new_answer_text)).getText().toString();
 					int questionId = getQuestionId();
+					int latitude = MainActivity.getUser().getLatitude();
+					int longitude = MainActivity.getUser().getLongitude();
 					HttpTaskHandler handler = new HttpTaskHandler(){
 						public void taskSuccessful(JSONObject json) {
 							try {
 								if (json.getBoolean("success")){
-									// The Answer was successfully created, so update the view
-									JSONObject question = json.getJSONObject("question");
-									setQuestionView(question);
-									((EditText)findViewById(R.id.new_answer_text)).setText("");
+									// The Answer was successfully created, so update the view by restarting the activity
+									finish();
+									startActivity(getIntent());
 								}
 								else{
 									// TODO Create answer failed
@@ -219,7 +220,7 @@ public class ViewQuestionActivity extends MapActivity {
 						}
 					};
 					// Make the request to create an answer.
-					MainActivity.getRequestManager().createAnswer(handler, text, questionId);
+					MainActivity.getRequestManager().createAnswer(handler, text, latitude, longitude, questionId);
 					
 					MapView mv = (MapView) findViewById(R.id.mapview);
 					mv.setVisibility(View.VISIBLE);

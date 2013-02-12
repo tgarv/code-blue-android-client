@@ -10,14 +10,13 @@ package com.kalidu.codeblue.utils;
 public class URLManager {
 //	private String base = "http://10.0.2.2:5000/api/";
 	private String base = "http://codeblue.herokuapp.com/api/";
-	private String androidBase = "http://10.0.2.2:5000/api/android/";
 	private String login = "user_authenticate";
 	private String setLocation = "user_put_latlong";
 	private String listQuestions = "question";
 	private String createQuestion = "question_create";
 	private String viewQuestion = "question/%s";
 	private String viewAnswer = "answer/%s";
-	private String createAnswer = "answer/create.json";
+	private String createAnswer = "answer_create";
 	private String user = "user/%s";
 	private String userGCM = "user_register_gcm";
 	
@@ -51,7 +50,7 @@ public class URLManager {
 	}
 	
 	public String getCreateAnswerURL(){
-		return androidBase + createAnswer;
+		return base + createAnswer;
 	}
 	
 	public String getUserURL(int id){
