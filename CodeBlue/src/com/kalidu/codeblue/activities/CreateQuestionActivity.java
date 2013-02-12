@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -136,6 +138,36 @@ public class CreateQuestionActivity extends MapActivity {
     			}
     		}
     	);
+    	
+    	((EditText) findViewById(R.id.new_question_text)).setOnClickListener(
+    		new OnClickListener(){
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					MapView mv = (MapView) findViewById(R.id.mapview);
+					mv.setVisibility(View.GONE);
+					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
+					actionBar.setVisibility(View.GONE);
+					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
+					navBar.setVisibility(View.GONE);
+				}
+    		}
+    	);
+    	
+    	((EditText) findViewById(R.id.new_question_title)).setOnClickListener(
+        		new OnClickListener(){
+    				@Override
+    				public void onClick(View arg0) {
+    					// TODO Auto-generated method stub
+    					MapView mv = (MapView) findViewById(R.id.mapview);
+    					mv.setVisibility(View.GONE);
+    					LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionbar);
+    					actionBar.setVisibility(View.GONE);
+    					LinearLayout navBar = (LinearLayout) findViewById(R.id.navbar);
+    					navBar.setVisibility(View.GONE);
+    				}
+        		}
+        	);
     }
     
     private void mapInit(){
@@ -146,6 +178,7 @@ public class CreateQuestionActivity extends MapActivity {
         this.setMapView((MapView) findViewById(R.id.mapview));
         this.getMapView().getOverlays().add(new CreateQuestionItemizedOverlay(marker));
         
+        this.getMapView().setBuiltInZoomControls(true);
         User user = MainActivity.getUser();
         MapController controller = this.getMapView().getController();
         controller.setZoom(16);

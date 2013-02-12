@@ -58,7 +58,7 @@ public class CreateQuestionItemizedOverlay extends ItemizedOverlay{
 	}
 	
 	public void addItem(GeoPoint point){
-		this.items.add(new OverlayItem(point, "String1", "String2"));
+		this.items.add(new OverlayItem(point, "", ""));
 		populate();
 	}
 
