@@ -43,8 +43,13 @@ public class QuestionAdapter extends BaseAdapter {
 		TextView author = (TextView) questionView.findViewById(R.id.question_author);
 		author.setText(question.getUsername());
 		
-		TextView date = (TextView) questionView.findViewById(R.id.question_time);
-		date.setText("TODO");
+		// Set the text for how many answers there are, pluralized correctly
+		TextView answerCount = (TextView) questionView.findViewById(R.id.answer_count);
+		int count = question.getAnswerIDs().size();
+		String countText = Integer.toString(count) + " Answer";
+		if(count != 1)
+			countText += "s";
+		answerCount.setText(countText);
 		
 		TextView title = (TextView) questionView.findViewById(R.id.question_title);
 		title.setText(question.getTitle());

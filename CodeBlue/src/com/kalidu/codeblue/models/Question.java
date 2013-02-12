@@ -1,5 +1,6 @@
 package com.kalidu.codeblue.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class Question {
 
 	private String text;
-	private List<Answer> answers;
+	private List<Integer> answerIDs;
 	private int id;
 	private String username;
 	private double latitude;
@@ -27,6 +28,7 @@ public class Question {
 		this.setText(text);
 		this.setLatitude(latitude);
 		this.setLongitude(longitude);
+		this.setAnswerIDs(new ArrayList<Integer>(0));
 	}
 
 	public String getText() {
@@ -37,16 +39,16 @@ public class Question {
 		this.text = text;
 	}
 
-	public List<Answer> getAnswers() {
-		return answers;
+	public List<Integer> getAnswerIDs() {
+		return answerIDs;
 	}
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
+	public void setAnswerIDs(List<Integer> answerIDs) {
+		this.answerIDs = answerIDs;
 	}
 	
-	public void addAnswer(Answer answer){
-		this.answers.add(answer);
+	public void addAnswerID(Integer answerID){
+		this.answerIDs.add(answerID);
 	}
 
 	public int getId() {

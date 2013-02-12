@@ -32,6 +32,11 @@ public class JSONExtractor {
 				int longitude = jsonQuestion.getInt("longitude");
 				
 				Question q = new Question(questionId, username, title, text, latitude, longitude);
+				for(int k=0; k < answers.length(); k++){
+					JSONObject answer = answers.getJSONObject(k);
+					Integer answerID = answer.getInt("id");
+					q.addAnswerID(answerID);
+				}
 				questions.add(q);
 			}
 		} catch(JSONException e) {

@@ -22,11 +22,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/question_time"
+            android:id="@+id/answer_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="February 5, 2013"
+            android:text="0 Answers"
             android:textSize="14sp" />
 
     </LinearLayout>
